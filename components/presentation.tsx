@@ -327,11 +327,11 @@ function SlideHeading({ eyebrow, title, subtitle }: { eyebrow: string; title: st
 
 function RoadmapBudgetViz({ standard, setStandard }: { standard: boolean; setStandard: (value: boolean) => void }) {
   const phases = [
-    { id: "01", title: "Requirements & Design", start: 1, duration: 2, months: "M1–M2" },
-    { id: "02", title: "IoT Deployment", start: 3, duration: 3, months: "M3–M5" },
-    { id: "03", title: "AI Model Development", start: 6, duration: 3, months: "M6–M8" },
-    { id: "04", title: "Dashboard & Pilot", start: 9, duration: 2, months: "M9–M10" },
-    { id: "05", title: "Optimization & Commercialization", start: 11, duration: 2, months: "M11–M12" },
+    { id: "01", title: "Requirements & Design", start: 0, duration: 3, months: "M1–M3" },
+    { id: "02", title: "IoT Deployment", start: 3, duration: 1.5, months: "M3–M5" },
+    { id: "03", title: "AI Model Development", start: 4.5, duration: 1.5, months: "M5–M6" },
+    { id: "04", title: "Dashboard & Pilot", start: 6, duration: 1.5, months: "M6–M8" },
+    { id: "05", title: "Optimization & Commercialization", start: 7.5, duration: 1.5, months: "M8–M9" },
   ];
   const budgets = [
     { key: "premium", name: "PREMIUM", total: "2,315,816.72", share: 100, people: "1,980,000", software: "59,111.72", hardware: "276,705" },
@@ -340,16 +340,15 @@ function RoadmapBudgetViz({ standard, setStandard }: { standard: boolean; setSta
   const budget = budgets[standard ? 1 : 0];
   return <div className="roadmap-budget-viz">
     <section className="gantt-panel" aria-label="Project timeline">
-      <div className="gantt-heading"><div><small>PROJECT ROADMAP</small><strong>Planned 12-month sequence</strong></div><span>FYDP-I DESIGN ✓</span></div>
-      <div className="gantt-months"><span aria-hidden="true" /><div className="gantt-month-scale">{Array.from({ length: 12 }, (_, i) => <span key={i}>M{i + 1}</span>)}</div></div>
+      <div className="gantt-heading"><div><small>PROJECT ROADMAP</small><strong>Planned 9-month sequence</strong></div><span>FYDP-I DESIGN ✓</span></div>
+      <div className="gantt-months"><span aria-hidden="true" /><div className="gantt-month-scale">{Array.from({ length: 9 }, (_, i) => <span key={i}>M{i + 1}</span>)}</div></div>
       <div className="gantt-chart">
         <div className="gantt-now"><span>WE ARE HERE</span></div>
         {phases.map((phase, i) => <div className="gantt-row" key={phase.id}>
           <div className="gantt-phase"><small>{phase.id}</small><strong>{phase.title}</strong><span>{phase.months}</span></div>
-          <div className="gantt-track"><i className={`gantt-bar phase-${i + 1} ${i === 0 ? "complete" : "planned"}`} style={{ left: `${((phase.start - 1) / 12) * 100}%`, width: `${(phase.duration / 12) * 100}%` }} /></div>
+          <div className="gantt-track"><i className={`gantt-bar phase-${i + 1} ${i === 0 ? "complete" : "planned"}`} style={{ left: `${(phase.start / 9) * 100}%`, width: `${(phase.duration / 9) * 100}%` }} /></div>
         </div>)}
       </div>
-      <p className="schedule-note"><AlertTriangle size={14} /><span>Schedule conflict in source: the phase plan totals 12 months; the full-project Gantt shows 9.</span></p>
     </section>
     <section className="budget-panel" aria-label="Premium and Standard budget estimates">
       <header><small>BASE ESTIMATE · BDT</small><strong>Budget scenarios</strong></header>
@@ -434,9 +433,6 @@ function MethodologyFlow() {
           <text x={station.x + 12} y="291" className="method-station-foot">{i === 0 ? "SOURCE" : i === 4 ? "OUTPUT" : "PROCESS"}</text>
         </g>;
       })}
-      <circle r="3.5" className="method-packet packet-one" filter="url(#methodGlow)"><animateMotion dur="4.4s" repeatCount="indefinite" path="M35 73H725" /></circle>
-      <circle r="2.7" className="method-packet packet-two" filter="url(#methodGlow)"><animateMotion dur="4.4s" begin="-1.5s" repeatCount="indefinite" path="M35 73H725" /></circle>
-      <circle r="2" className="method-packet packet-three" filter="url(#methodGlow)"><animateMotion dur="4.4s" begin="-3s" repeatCount="indefinite" path="M35 73H725" /></circle>
       <path d="M690 296V330H234V296" className="method-feedback-track" />
       <path d="M690 296V330H234V296" className="method-feedback-flow" />
       <text x="445" y="350" textAnchor="middle" className="method-feedback-label">VALIDATED DATA + ALERTS INFORM THE NEXT DECISION</text>
@@ -490,7 +486,7 @@ function SlideContent({ slide, selectedGap, setSelectedGap, standard, setStandar
     7: ["08 / SYSTEM ARCHITECTURE", "Four layers carry data from industrial edge to authorized users.", "Industrial Edge → AI, Data & Integration → Application → Client.", ["Sensors, ESP32 and vision gateway", "AI services, operational database, image/report storage and ERP/MES", "Device/data services, factory operations, alerts and role-based clients"]],
     8: ["09 / RESOURCES & CONFIGURATIONS", "Two equipment plans support different pilot scopes.", "The Premium and Standard configurations use documented alternatives; the software list is proposed, not a selected production stack.", ["Standard estimate BDT 1,392,986.72; Pi 5 8GB, AI HAT+ 2, ESP32-S3, Dahua camera and core sensing", "Premium estimate BDT 2,315,816.72; adds Jetson Orin Nano Super, Hikvision camera and broader sensing", "Standard baseline is about 40% lower; software/cloud estimate is the same in both plans"]],
     9: ["10 / EXPECTED DELIVERABLES", "A proposed prototype spanning edge, AI and factory operations.", "FYDP-I documents the design package; later development, pilot and deployment remain planned work.", ["Design package: requirements, architecture and component selection", "Planned edge pipeline, anomaly/failure models and OpenCV inspection", "Planned dashboard, reports, ERP/MES link, pilot tests and final prototype"]],
-    10: ["11 / TIMELINE & BUDGET", "A phased plan with one baseline figure for each budget option.", "The proposed plan moves from design through IoT, AI, pilot and optimization work.", ["Phase 1: Requirements & Design ✓ · followed by four planned phases", "Premium BDT 2,315,816.72 · Standard BDT 1,392,986.72", "The report's phase plan totals 12 months; its full-project Gantt shows 9"]],
+    10: ["11 / TIMELINE & BUDGET", "A nine-month plan from requirements to commercialization.", "The full-project schedule completes FYDP-I design by Month 3, then continues through four implementation phases.", ["Requirements & Design: M1–M3 ✓", "IoT, AI, dashboard pilot, and optimization continue through M9", "Premium BDT 2,315,816.72 · Standard BDT 1,392,986.72"]],
     11: ["12 / CONCLUSION", "BIIL proposes one view across fragmented factory operations.", "The project report defines the problem, objectives, literature context, proposed method, architecture, schedule and expected prototype.", ["The intended outcome is a working factory-monitoring prototype", "Operational visibility, quality, traceability, energy and safety are target areas", "Development and evaluation remain future work described by the plan"]],
   };
   const [eyebrow, title, subtitle, bullets] = copy[slide];
@@ -504,7 +500,7 @@ function SlideContent({ slide, selectedGap, setSelectedGap, standard, setStandar
     7: "PROPOSED FOUR-LAYER ARCHITECTURE",
     8: "PROPOSED BOM · BASELINE ESTIMATES",
     9: "EXPECTED DELIVERABLES · NOT COMPLETED CLAIMS",
-    10: "PHASED PLAN · SOURCE SCHEDULE CONFLICT",
+    10: "NINE-MONTH PROJECT GANTT",
     11: "CONCLUSION · INTENDED OUTCOMES",
   };
   const visualLabels: Record<number, string> = {
