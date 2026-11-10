@@ -444,6 +444,30 @@ function MethodologyFlow() {
   </div>;
 }
 
+function GapExplorer({ selectedGap, setSelectedGap }: { selectedGap: number; setSelectedGap: (index: number) => void }) {
+  const colors = ["#74d9c8", "#7bb9ff", "#c4a3ff", "#ffd07a", "#88d8ff"];
+  const icons = [Activity, Layers3, ScanLine, Network, HardDrive];
+  return <div className="domain-explorer gap-explorer">
+    <div className="domain-orbit">
+      <div className="orbit-core">BIIL<span>RESEARCH GAP</span></div>
+      <div className="orbit-ring" />
+      {gapResponses.map((gap, i) => {
+        const Icon = icons[i];
+        return <button key={gap.title} data-slide-interaction data-activate-on-arrow tabIndex={0} aria-pressed={selectedGap === i} className={`orbit-node ${selectedGap === i ? "selected" : ""}`} style={{ "--angle": `${i * 72 - 90}deg`, "--node-index": i, "--domain-color": colors[i] } as React.CSSProperties} onClick={() => setSelectedGap(i)} aria-label={`Explore gap ${i + 1}: ${gap.title}`}>
+          <Icon className="orbit-node-icon" size={19} />
+          <span className="orbit-node-number">{String(i + 1).padStart(2, "0")}</span>
+          <span className="orbit-node-label">{gap.label}</span>
+          <div className="orbit-expanded-content"><strong>{gap.title}</strong><small>DOCUMENTED GAP</small><p>{gap.detail}</p></div>
+        </button>;
+      })}
+    </div>
+    <div className="domain-detail gap-detail">
+      <div className="domain-detail-heading"><span className="domain-number">0{selectedGap + 1}</span><div><strong>{gapResponses[selectedGap].title}</strong><span>{gapResponses[selectedGap].label}</span></div></div>
+      <div className="gap-response-copy"><small>BIIL RESPONSE</small><p>{gapResponses[selectedGap].response}</p></div>
+    </div>
+  </div>;
+}
+
 function DataViz({ slide, selectedGap, setSelectedGap, standard, setStandard }: {
   slide: number; selectedGap: number; setSelectedGap: (i: number) => void;
   standard: boolean; setStandard: (v: boolean) => void;
@@ -452,7 +476,7 @@ function DataViz({ slide, selectedGap, setSelectedGap, standard, setStandard }: 
   if (slide === 1) return <div className="problem-board"><div className="problem-board-top"><span>OPERATIONAL SIGNALS</span><span className="status muted"><i /> DISCONNECTED VIEW</span></div><div className="problem-lines">{problems.map((p, i) => <div className="problem-row" key={p[0]} role="group" aria-label={p[0]}><span className="problem-index">{p[2]}</span><strong className="problem-label">{p[0]}</strong><div className="problem-graph"><i style={{ width: `${29 + (i * 19) % 68}%`, animationDelay: `${i * 0.12}s` }} /></div><span className="problem-warning"><AlertTriangle size={14} /></span></div>)}</div><p className="viz-note">Seven operational problems identified in the project.</p></div>;
   if (slide === 2) return <div className="objective-columns">{objectiveGroups.map((group, i) => <section className="objective-column" key={group.title} style={{ "--objective-color": group.accent, "--objective-index": i } as React.CSSProperties}><header><Target size={17} /><span>0{i + 1}</span><strong>{group.title}</strong></header><ul>{group.items.map((item) => <li key={item}>{item}</li>)}</ul></section>)}</div>;
   if (slide === 3) return <div className="literature-board">{literature.map((item, i) => <article className="literature-card" key={item.title} role="group" aria-label={`${item.title}. ${item.text}`}><div className="literature-card-head"><BookOpen size={15} /><span>0{i + 1}</span><small>{item.tag}</small></div><h3>{item.title}</h3><p>{item.text}</p><footer><FileText size={13} />{item.refs}</footer></article>)}<p className="literature-caveat">Company cases and published studies inform the proposal; none are BIIL test results.</p></div>;
-  if (slide === 4) return <div className="domain-explorer gap-explorer"><div className="domain-orbit"><div className="orbit-core">BIIL<span>RESEARCH GAP</span></div><div className="orbit-ring" />{gapResponses.map((gap, i) => { const Icon = [Activity, Layers3, ScanLine, Network, HardDrive][i]; return <button key={gap.title} data-slide-interaction data-activate-on-arrow tabIndex={0} aria-pressed={selectedGap === i} className={`orbit-node ${selectedGap === i ? "selected" : ""}`} style={{ "--angle": `${i * 72 - 90}deg`, "--node-index": i, "--domain-color": ["#74d9c8", "#7bb9ff", "#c4a3ff", "#ffd07a", "#88d8ff"][i] } as React.CSSProperties} onClick={() => setSelectedGap(i)} aria-label={`Explore gap ${i + 1}: ${gap.title}`}><Icon className="orbit-node-icon" size={19} /><span className="orbit-node-number">{String(i + 1).padStart(2, "0")}</span><span className="orbit-node-label">{gap.label}</span><div className="orbit-expanded-content"><strong>{gap.title}</strong><small>DOCUMENTED GAP</small><p>{gap.detail}</p></div></button>; })}</div><div className="domain-detail gap-detail"><div className="domain-detail-heading"><span className="domain-number">0{selectedGap + 1}</span><div><strong>{gapResponses[selectedGap].title}</strong><span>{gapResponses[selectedGap].label}</span></div></div><div className="gap-response-copy"><small>BIIL RESPONSE</small><p>{gapResponses[selectedGap].response}</p></div></div><div className="gap-banner"><span>BIIL</span><ArrowRight size={17} /><strong>Affordable · Integrated · Modular</strong><small>ONE PROPOSED INTELLIGENCE LAYER</small></div></div>;
+  if (slide === 4) return <GapExplorer selectedGap={selectedGap} setSelectedGap={setSelectedGap} />;
   if (slide === 5) return <MethodologyFlow />;
   if (slide === 6) return <div className="vision-demo"><div className="vision-head"><span><Camera size={15} /> INDUSTRIAL INSPECTION · CONCEPT</span><span className="demo-tag">PROPOSED PIPELINE</span></div><div className="fabric-scan"><div className="fabric-texture" /><div className="scan-beam" /><div className="fabric-defect defect-one" /><div className="fabric-defect defect-two" /><div className="detection-box"><span>DEFECT REGION</span></div><div className="scan-camera"><Camera size={18} /><span>FIXED CAMERA</span></div><div className="scan-caption">SCANNING SURFACE · SCHEMATIC</div></div><div className="pipeline-steps">{[["01", "Capture", "Industrial camera"], ["02", "Preprocess", "OpenCV · ROI"], ["03", "Rule checks", "Threshold · morphology"], ["04", "Learned detection", "Lightweight model"], ["05", "Report", "Type · location · confidence"]].map((s, i) => <div className={`pipeline-step ${i === 2 ? "active" : ""}`} key={s[0]} role="group" aria-label={`${s[1]}: ${s[2]}`}><small>{s[0]}</small><strong>{s[1]}</strong><span>{s[2]}</span></div>)}</div><p className="viz-note">Proposed hybrid pipeline · no BIIL model performance is claimed.</p></div>;
   if (slide === 7) return <ArchitectureDiagram />;
