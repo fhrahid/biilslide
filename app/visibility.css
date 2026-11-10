@@ -3,6 +3,8 @@
 [data-slide-interaction] { transition: outline-color .18s ease, border-color .18s ease, background-color .18s ease; }
 [data-slide-interaction]:focus-visible { z-index: 4; outline: 2px solid #70e4d7; outline-offset: 3px; background-color: rgba(32,76,76,.38); }
 .keyboard-hint { font-size: 8px; gap: 8px; white-space: nowrap; }
+.download-button { height: 34px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 9px; border: 1px solid rgba(164,194,195,.19); background: rgba(12,20,26,.55); color: #a7b9b8; text-decoration: none; font: 8px var(--mono); letter-spacing: .06em; transition: color .18s,border-color .18s,background .18s; }
+.download-button:hover { color: #64d8cd; border-color: rgba(98,216,205,.55); background: #122329; }
 
 @media (min-width: 1101px) {
   .roadmap-budget-viz { width: 100%; max-width: 800px; margin-left: auto; display: grid; grid-template-columns: minmax(0, 1.38fr) minmax(255px, .82fr); gap: 14px; align-items: stretch; }
@@ -410,6 +412,7 @@
 }
 
 @media (max-width: 800px) {
+  .download-button { height: 31px; padding: 0 7px; font-size: 7px; }
   .slide-stage { display: block; }
   .slide-content { height: auto; min-height: 100%; }
   .scene-shell { height: auto; min-height: 100%; align-items: flex-start; }
