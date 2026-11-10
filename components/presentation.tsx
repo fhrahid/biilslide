@@ -6,9 +6,9 @@ import gsap from "gsap";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Activity, AlertTriangle, ArrowLeft, ArrowRight, BarChart3, Bolt,
-  Box, Camera, Check, CircleHelp, Cpu,
-  Gauge, HardDrive, Layers3, Maximize, Minimize, Network, ScanLine, Shield,
-  Thermometer, Wind, X,
+  Box, BookOpen, Camera, CircleHelp, Cpu,
+  FileText, HardDrive, Layers3, Maximize, Minimize, Network, ScanLine, Shield,
+  Target, X,
 } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -24,10 +24,10 @@ const team = [
 ];
 
 const chapters = [
-  "Opening", "The challenge", "The BIIL vision", "Six intelligence domains",
-  "Machine intelligence", "Computer vision quality", "Safety & environment",
-  "System architecture", "Command center", "Hardware & technology",
-  "Roadmap & investment", "The intended outcome",
+  "Project overview", "Problem statement", "Project objectives", "Literature review",
+  "Research gap & BIIL", "Methodology & plan", "Vision inspection plan",
+  "System architecture", "Project timeline", "Expected deliverables",
+  "Resources & budget", "Conclusion",
 ];
 
 const problems = [
@@ -47,6 +47,48 @@ const domains = [
   { title: "Energy Intelligence", sub: "Measure · understand", input: "Single / three-phase energy meter readings", process: "Collect and analyze electricity consumption.", output: "Energy usage monitoring and analysis", color: "#ffd07a", icon: Bolt },
   { title: "Environmental & Safety", sub: "Sense · monitor · alert", input: "Temperature · humidity · air quality · gas · camera", process: "Environmental monitoring and PPE / safety-event checks.", output: "Safety and environmental alerts", color: "#ff9d83", icon: Shield },
   { title: "Factory Analytics", sub: "Unify · report · inform", input: "Validated operational data across BIIL modules", process: "Present information through dashboards and reporting.", output: "Dashboards · reports · notifications · recommendations", color: "#88d8ff", icon: Network },
+];
+
+const gapResponses = [
+  { title: "Local factory realities", label: "AFFORDABILITY", detail: "Many smart-factory solutions target large plants, not local cost, infrastructure and operating conditions.", response: "Design an affordable, modular RMG pilot." },
+  { title: "Single-function systems", label: "INTEGRATION", detail: "Existing work often addresses one function instead of a joined-up factory view.", response: "Unify the six intelligence domains." },
+  { title: "Variable factory images", label: "REAL-WORLD DATA", detail: "Lighting, fabric, camera position and production conditions challenge model transfer.", response: "Propose a hybrid OpenCV + learned pipeline." },
+  { title: "Fragmented information", label: "OPERATIONAL SILOS", detail: "Machine, quality, production, energy and safety information can remain disconnected.", response: "Bring operational data into one layer." },
+  { title: "ERP/MES continuity", label: "MODULAR SCALE", detail: "SMEs need to start with a pilot and keep their existing factory systems.", response: "Scale alongside ERP/MES, not replace them." },
+];
+
+const objectives = [
+  "Monitor machine condition and production activity in real time.",
+  "Detect abnormal machine behaviour and predict potential failures.",
+  "Inspect product defects with an OpenCV-based computer-vision pipeline.",
+  "Track products and production activity using barcode and RFID systems.",
+  "Monitor energy use and factory environmental conditions.",
+  "Support worker safety with alerts and PPE monitoring.",
+  "Provide dashboards, reports and useful recommendations.",
+  "Support integration with existing ERP and MES systems.",
+];
+
+const literature = [
+  { tag: "INDUSTRIAL PRECEDENTS", title: "Connected factory practice", text: "BMW reports sensor-led predictive maintenance and AIQX quality inspection. Siemens Amberg and Schneider Electric Le Vaudreuil describe connected production and energy monitoring.", refs: "[1] [2] [7] [8]" },
+  { tag: "FABRIC-DEFECT REVIEW", title: "Traditional + learning-based methods", text: "Guo et al. review model, spectral, statistical and structural methods alongside machine-learning and deep-learning approaches for fabric inspection.", refs: "Guo et al. · [5]" },
+  { tag: "REAL-WORLD FABRIC STUDY", title: "Model metrics are study-specific", text: "Nasim et al. report YOLOv8n mAP 84.8%, precision 0.818 and recall 0.839 over seven defect classes on their manufacturing images.", refs: "Nasim et al. · [6]" },
+  { tag: "ONLINE INSPECTION", title: "Speed and false alarms matter", text: "Zhao et al. report DI-Net at 30.1 fps (20.96 m/min). Carvalho et al. connect detection to operational performance and false-alarm effects.", refs: "Zhao et al. · [13]  |  Carvalho et al. · [4]" },
+];
+
+const methodSteps = [
+  ["01", "COLLECT", "Machine & product sensors · cameras · barcode / RFID"],
+  ["02", "VALIDATE AT EDGE", "Identify source · check format · buffer / preprocess"],
+  ["03", "TRANSMIT SECURELY", "Factory network · MQTT / HTTPS over TLS"],
+  ["04", "PROCESS & STORE", "AI services · operational database · image / report storage"],
+  ["05", "DELIVER & INTEGRATE", "Role-based dashboards · alerts · reports · ERP/MES"],
+];
+
+const deliverables = [
+  ["FYDP-I · DESIGN PACKAGE", "Requirement specification · architecture · use-case / data-flow diagrams · component selection"],
+  ["PHASE 2 · PLANNED", "Sensors, edge devices and cameras; data acquisition and validation pipeline"],
+  ["PHASE 3 · PLANNED", "Anomaly / failure models; OpenCV defect inspection and model testing"],
+  ["PHASE 4 · PLANNED", "Dashboard, reports, alerts and ERP/MES link; pilot and user testing"],
+  ["PHASE 5 · PLANNED", "Performance optimization, model refinement, documentation and commercialization plan"],
 ];
 
 const teamLead = "BIIL: An AIoT and Computer Vision Enabled Industrial Intelligence Platform for Smart RMG Manufacturing in Bangladesh.";
@@ -179,12 +221,29 @@ function Landmark({ index, color = "#55ddd2" }: { index: number; color?: string 
     <mesh position={[0, 1.57, 0.02]}><coneGeometry args={[0.72, 1.4, 4]} /><meshBasicMaterial color="#59dcd3" transparent opacity={0.08} side={THREE.DoubleSide} /></mesh>
     <mesh position={[0.45, 0.72, 0.35]}><boxGeometry args={[0.4, 0.24, 0.02]} /><meshBasicMaterial color="#ffb760" wireframe /></mesh>
   </group>;
-  if (index === 7) return <group ref={group} position={[x, 1.2, -1]}>
-    {[0, 1, 2, 3].map((layer) => <group key={layer} position={[0, layer * 0.65 - 0.85, 0]}>
-      <mesh><boxGeometry args={[2.6, 0.18, 1.35]} /><meshStandardMaterial color={["#214b42", "#343260", "#20505c", "#293a4b"][layer]} transparent opacity={0.78} metalness={0.5} /></mesh>
-      {[-0.78, 0, 0.78].map((offset, j) => <mesh key={j} position={[offset, 0.13, 0]}><boxGeometry args={[0.58, 0.1, 0.72]} /><meshStandardMaterial color={layer === 3 ? "#72a9d0" : layer === 2 ? "#58c6c0" : layer === 1 ? "#ae92eb" : "#75c4a0"} emissive="#133038" emissiveIntensity={0.3} /></mesh>)}
-    </group>)}
-    <Signal start={[-1.5, -0.92, 0]} end={[1.5, 0.93, 0]} delay={0.1} />
+  if (index === 7) return <group ref={group} position={[x + 0.7, 1.4, -1]}>
+    {[
+      { name: "INDUSTRIAL EDGE", color: "#36896d", module: "#76d1a1" },
+      { name: "AI · DATA", color: "#6a56a1", module: "#b89af0" },
+      { name: "APPLICATION", color: "#247f86", module: "#66d4cb" },
+      { name: "CLIENT", color: "#315b85", module: "#84c2f5" },
+    ].map((layer, i) => {
+      const y = i * 0.95 - 1.425;
+      return <group key={layer.name} position={[0, y, 0]}>
+        <mesh position={[0, 0, 0]}><boxGeometry args={[4.6, 0.16, 1.55]} /><meshStandardMaterial color={layer.color} transparent opacity={0.72} metalness={0.52} roughness={0.32} emissive={layer.color} emissiveIntensity={0.12} /></mesh>
+        <mesh position={[-2.18, 0.12, 0]}><boxGeometry args={[0.08, 0.28, 1.42]} /><meshBasicMaterial color={layer.module} /></mesh>
+        {[-1.42, 0, 1.42].map((offset, j) => <group key={j} position={[offset, 0.22, 0.08]}>
+          <mesh><boxGeometry args={[1.25, 0.28, 0.92]} /><meshStandardMaterial color={layer.module} transparent opacity={0.9} metalness={0.35} roughness={0.38} emissive={layer.module} emissiveIntensity={0.12} /></mesh>
+          <mesh position={[0, 0.15, 0.02]}><boxGeometry args={[0.92, 0.025, 0.66]} /><meshBasicMaterial color={i === 0 ? "#b7ebce" : "#c3e7e4"} transparent opacity={0.48} /></mesh>
+          <mesh position={[0.48, 0.17, 0.3]}><sphereGeometry args={[0.035, 10, 10]} /><meshBasicMaterial color={j === 1 ? "#ffc16d" : "#8ffff0"} /></mesh>
+        </group>)}
+      </group>;
+    })}
+    <mesh position={[0, 0.25, 2.45]}><boxGeometry args={[0.055, 2.85, 0.045]} /><meshBasicMaterial color="#45d5ca" transparent opacity={0.4} /></mesh>
+    <Signal start={[0, -1.43, 0.82]} end={[0, -0.48, 0.82]} delay={0} />
+    <Signal start={[0, -0.48, 0.82]} end={[0, 0.47, 0.82]} delay={0.28} />
+    <Signal start={[0, 0.47, 0.82]} end={[0, 1.42, 0.82]} delay={0.56} />
+    <pointLight position={[0, 0.1, 3]} intensity={14} distance={9} color="#38bfc0" />
   </group>;
   if (index === 8) return <group ref={group} position={[x, 1.35, -1]}>
     <mesh><boxGeometry args={[3.1, 1.85, 0.12]} /><meshStandardMaterial color="#10212c" metalness={0.65} roughness={0.3} /></mesh>
@@ -231,8 +290,8 @@ function IndustrialWorld({ world }: { world: React.MutableRefObject<WorldState> 
     if (frontLight.current) frontLight.current.intensity = 24 * reveal;
     const targetX = stage * 4.8;
     camera.position.x = THREE.MathUtils.damp(camera.position.x, targetX, 2.2, 1 / 60);
-    camera.position.y = THREE.MathUtils.damp(camera.position.y, stage === 0 || stage === 11 ? 3.1 : 2.6, 2, 1 / 60);
-    camera.position.z = THREE.MathUtils.damp(camera.position.z, stage === 0 || stage === 11 ? 9.4 : 8.2, 2, 1 / 60);
+    camera.position.y = THREE.MathUtils.damp(camera.position.y, stage === 0 || stage === 11 ? 3.7 : stage === 7 ? 3 : 3.2, 2, 1 / 60);
+    camera.position.z = THREE.MathUtils.damp(camera.position.z, stage === 0 || stage === 11 ? 12.6 : stage === 7 ? 9.6 : 11.4, 2, 1 / 60);
     camera.lookAt(targetX, 1.35, -1.2);
     if (factory.current) factory.current.position.y = Math.sin(clock.elapsedTime * 0.34) * 0.018;
   });
@@ -263,7 +322,7 @@ function IndustrialWorld({ world }: { world: React.MutableRefObject<WorldState> 
 function TeamStrip() {
   return <section className="team-roster" aria-label="Project team members">
     <div className="team-roster-heading"><strong>PROJECT TEAM</strong><span>5 MEMBERS</span></div>
-    <div className="team-roster-grid">{team.map((person, index) => <div className="team-member" key={person.name}>
+    <div className="team-roster-grid">{team.map((person, index) => <div className="team-member" key={person.name} aria-label={`Team member ${person.name}`}>
       <div className="member-portrait"><Image src={person.image} alt={person.name} fill sizes="48px" /></div>
       <div className="member-details"><small>0{index + 1}</small><strong>{person.name}</strong></div>
     </div>)}</div>
@@ -278,79 +337,124 @@ function SlideHeading({ eyebrow, title, subtitle }: { eyebrow: string; title: st
   return <header className="slide-heading"><p className="eyebrow"><span className="eyebrow-line" />{eyebrow}</p><h1>{title}</h1><p className="subtitle">{subtitle}</p></header>;
 }
 
-function DataViz({ slide, selectedDomain, setSelectedDomain, anomaly, setAnomaly, standard, setStandard }: {
-  slide: number; selectedDomain: number; setSelectedDomain: (i: number) => void;
-  anomaly: boolean; setAnomaly: (v: boolean) => void; standard: boolean; setStandard: (v: boolean) => void;
+function RoadmapBudgetViz() {
+  const phases = [
+    ["01", "Requirements & Design", "Requirement specification · architecture · component selection", "Months 1–2"],
+    ["02", "IoT Deployment", "Sensors · edge devices · cameras · validated data acquisition", "Months 3–5"],
+    ["03", "AI Model Development", "Anomaly & failure models · OpenCV inspection · model testing", "Months 6–8"],
+    ["04", "Dashboard & Pilot", "Dashboard · reports · alerts · ERP/MES link · user testing", "Months 9–10"],
+    ["05", "Optimization & Commercialization", "Performance optimization · model refinement · final documentation", "Months 11–12"],
+  ];
+  const budgets = [
+    ["PREMIUM BUDGET", "2,315,816.72–2,317,816.72", "Human resources", "BDT 1,980,000", "Software & cloud", "BDT 59,111.72", "Hardware & equipment", "BDT 276,705–278,705"],
+    ["STANDARD BUDGET", "1,392,986.72–1,395,986.72", "Human resources", "BDT 1,245,000", "Software & cloud", "BDT 59,111.72", "Hardware & equipment", "BDT 88,875–91,875"],
+  ];
+  return <div className="roadmap-budget"><div className="roadmap"><div className="roadmap-line" />{phases.map((phase, i) => <div className="roadmap-phase" key={phase[0]} role="group" aria-label={`${phase[1]}, ${phase[3]}: ${phase[2]}`}><div className={`roadmap-dot ${i === 0 ? "done" : ""}`}>{phase[0]}</div><div><strong>{phase[1]}</strong><span>{phase[2]}</span></div><small>{phase[3]}</small></div>)}</div><div className="budget-cards">{budgets.map((budget) => <div className="budget-card" key={budget[0]} role="group" aria-label={`${budget[0]} total BDT ${budget[1]}`}><small>{budget[0]} · BDT</small><strong>{budget[1]}</strong>{[2, 4, 6].map((i) => <div className="budget-row" key={budget[i]}><span>{budget[i]}</span><b>{budget[i + 1]}</b></div>)}</div>)}</div><div className="schedule-note"><AlertTriangle size={16} /><span><b>Schedule discrepancy in report:</b> Table 3.1 describes 12 months; Figure 3.2 is captioned a full 9-month Gantt. Both are preserved here, not reconciled.</span></div></div>;
+}
+
+function DeliverablesViz() {
+  return <div className="deliverables-board"><div className="deliverables-intro"><span>EXPECTED FINAL PRODUCT · PROPOSED</span><strong>BIIL working prototype</strong><p>Edge hardware kit + central platform + AI models + web dashboard</p></div><div className="deliverable-list">{deliverables.map((item, i) => <div className="deliverable-card" key={item[0]} role="group" aria-label={`${item[0]}: ${item[1]}`}><span>{String(i + 1).padStart(2, "0")}</span><div><small>{item[0]}</small><p>{item[1]}</p></div><ArrowRight size={15} /></div>)}</div><div className="user-roles"><small>INTENDED FACTORY USERS</small><span>Manager</span><span>Production Supervisor</span><span>Maintenance Engineer</span><span>Quality Inspector</span><span>Factory Worker</span></div><p className="viz-note">These are planned outputs and users described in the report—not completed deployment claims.</p></div>;
+}
+
+function ArchitectureDiagram() {
+  const layers = [
+    { id: "04", name: "CLIENT LAYER", descriptor: "Web and responsive interfaces", modules: ["Factory dashboard", "Reports & alerts", "Role-based access"], order: 3, color: "#7bb9ff" },
+    { id: "03", name: "APPLICATION LAYER", descriptor: "BIIL backend services", modules: ["Device & data services", "Factory operations", "Alerts & integration"], order: 2, color: "#54d5c7" },
+    { id: "02", name: "AI, DATA & INTEGRATION", descriptor: "Analysis, storage and system links", modules: ["AI services", "Operational database", "ERP / MES"], order: 1, color: "#b99aff" },
+    { id: "01", name: "INDUSTRIAL EDGE LAYER", descriptor: "Near-machine collection and processing", modules: ["Machine & product sensors", "Environment & safety", "ESP32 + vision gateway"], order: 0, color: "#7bd1a6" },
+  ];
+  return <div className="architecture-presentation">
+    <div className="architecture-flow-caption"><span>SECURE DATA PATH</span> COLLECT <ArrowRight size={13} /> EDGE PROCESSING <ArrowRight size={13} /> CENTRAL BIIL <ArrowRight size={13} /> DASHBOARDS / ALERTS <ArrowRight size={13} /> ERP / MES</div>
+    <div className="architecture-stack-view">
+      <div className="architecture-data-beam" aria-hidden="true"><i /></div>
+      {layers.map((layer) => <div className="architecture-layer-dom" key={layer.id} style={{ "--layer-color": layer.color, "--layer-order": layer.order } as React.CSSProperties}>
+        <div className="architecture-layer-heading"><span>{layer.id}</span><strong>{layer.name}</strong><small>{layer.descriptor}</small></div>
+        <div className="architecture-layer-modules">{layer.modules.map((module) => <span key={module}>{module}</span>)}</div>
+      </div>)}
+      <div className="architecture-protocol"><span>MQTT / HTTPS over TLS</span><i /> timestamps · device IDs · validated records</div>
+    </div>
+    <p className="architecture-flow-note">Animated procedural 3D layer stack · flow runs Industrial Edge → AI / Data → Application → Client.</p>
+  </div>;
+}
+
+function DataViz({ slide, selectedGap, setSelectedGap, standard, setStandard }: {
+  slide: number; selectedGap: number; setSelectedGap: (i: number) => void;
+  standard: boolean; setStandard: (v: boolean) => void;
 }) {
-  if (slide === 0) return <div className="hero-stats"><div><span>01</span><strong>UNIFIED</strong><small>industrial intelligence layer</small></div><div><span>02</span><strong>MODULAR</strong><small>pilot line to wider scale</small></div><div><span>03</span><strong>PROPOSED</strong><small>FYDP-I system design</small></div></div>;
-  if (slide === 1) return <div className="problem-board"><div className="problem-board-top"><span>OPERATIONAL SIGNALS</span><span className="status muted"><i /> DISCONNECTED VIEW</span></div><div className="problem-lines">{problems.map((p, i) => <div className="problem-row" key={p[0]}><span className="problem-index">{p[2]}</span><strong className="problem-label">{p[0]}</strong><div className="problem-graph"><i style={{ width: `${29 + (i * 19) % 68}%`, animationDelay: `${i * 0.12}s` }} /></div><span className="problem-warning"><AlertTriangle size={14} /></span></div>)}</div><p className="viz-note">Seven documented operational challenges · problem statement, §1.1</p></div>;
-  if (slide === 2) return <div className="convergence"><div className="source-column">{["MACHINE TELEMETRY", "CAMERA IMAGES", "ENVIRONMENT", "PRODUCT ID", "ENERGY METER"].map((s, i) => <div key={s} className="source-node" style={{ "--delay": `${i * 0.12}s` } as React.CSSProperties}><span className="source-dot" />{s}<ArrowRight size={15} /></div>)}</div><div className="converge-lines"><i /><i /><i /><i /><i /></div><div className="biil-core"><div className="core-ring"><Layers3 size={26} /></div><strong>BIIL</strong><span>UNIFIED OPERATIONAL VIEW</span></div></div>;
-  if (slide === 3) return <div className="domain-explorer"><div className="domain-orbit"><div className="orbit-core">BIIL<span>INTELLIGENCE LAYER</span></div><div className="orbit-ring" />{domains.map((d, i) => { const Icon = d.icon; return <button key={d.title} className={`orbit-node ${selectedDomain === i ? "selected" : ""}`} style={{ "--angle": `${i * 60 - 90}deg`, "--domain-color": d.color } as React.CSSProperties} onClick={() => setSelectedDomain(i)} aria-label={`Explore ${d.title}`}><Icon size={19} /><span>{String(i + 1).padStart(2, "0")}</span></button>; })}</div><div className="domain-detail"><div className="domain-detail-heading"><span className="domain-number">0{selectedDomain + 1}</span><div><strong>{domains[selectedDomain].title}</strong><span>{domains[selectedDomain].sub}</span></div></div><div className="domain-detail-grid"><div><small>INPUTS</small><p>{domains[selectedDomain].input}</p></div><div><small>PROCESSING</small><p>{domains[selectedDomain].process}</p></div><div><small>OUTPUT</small><p>{domains[selectedDomain].output}</p></div></div></div></div>;
-  if (slide === 4) return <div className="machine-demo"><div className="demo-topline"><span><Activity size={15} /> MACHINE CONDITION PIPELINE</span><span className="demo-tag">SIMULATED READINGS</span></div><div className="motor-scene"><div className={`motor ${anomaly ? "hot" : ""}`}><div className="motor-body"><i /><i /><i /><span className="motor-cap" /></div><div className="motor-foot" /></div><div className="sensor-tag t-temp"><Thermometer size={14} /><span>TEMP</span><b>{anomaly ? "↑" : "—"}</b></div><div className="sensor-tag t-vib"><Activity size={14} /><span>VIBRATION</span><b>{anomaly ? "↑" : "—"}</b></div><div className="sensor-tag t-rpm"><Gauge size={14} /><span>RPM / POWER</span><b>INPUT</b></div><div className="motor-alert">{anomaly ? <><AlertTriangle size={14} /> SIMULATED ANOMALY · REVIEW REQUIRED</> : <><Check size={14} /> MONITORING PIPELINE · CONCEPT</>}</div></div><div className="signal-chart"><div className="chart-label"><span>VIBRATION SIGNAL</span><span>{anomaly ? "ANOMALY EVENT · SIMULATED" : "ILLUSTRATIVE SIGNAL"}</span></div><div className={`waveform ${anomaly ? "anomaly" : ""}`}>{Array.from({ length: 54 }, (_, i) => <i key={i} style={{ height: `${12 + Math.abs(Math.sin(i * (anomaly ? 1.48 : 0.38)) * (anomaly ? 73 : 35))}%` }} />)}</div></div><button className="outline-action" onClick={() => setAnomaly(!anomaly)}>{anomaly ? "Reset simulation" : "Simulate anomaly"}<ArrowRight size={15} /></button></div>;
-  if (slide === 5) return <div className="vision-demo"><div className="vision-head"><span><Camera size={15} /> INDUSTRIAL INSPECTION · CONCEPT</span><span className="demo-tag">PROPOSED PIPELINE</span></div><div className="fabric-scan"><div className="fabric-texture" /><div className="scan-beam" /><div className="fabric-defect defect-one" /><div className="fabric-defect defect-two" /><div className="detection-box"><span>DEFECT REGION</span></div><div className="scan-camera"><Camera size={18} /><span>FIXED CAMERA</span></div><div className="scan-caption">SCANNING SURFACE · SCHEMATIC</div></div><div className="pipeline-steps">{[["01", "Capture", "Industrial camera"], ["02", "Preprocess", "OpenCV · ROI"], ["03", "Rule checks", "Threshold · morphology"], ["04", "Learned detection", "Lightweight model"], ["05", "Report", "Type · location · confidence"]].map((s, i) => <div className={`pipeline-step ${i === 2 ? "active" : ""}`} key={s[0]}><small>{s[0]}</small><strong>{s[1]}</strong><span>{s[2]}</span></div>)}</div><p className="viz-note">Proposed hybrid pipeline · no BIIL model performance is claimed.</p></div>;
-  if (slide === 6) return <div className="safety-demo"><div className="safety-scene"><div className="safety-camera"><Camera size={16} /><span>VISION ZONE</span></div><div className="safety-cone" /><div className="worker-symbol"><div className="worker-head" /><div className="worker-torso"><span className="ppe-mark">PPE</span></div><div className="worker-legs" /></div><div className="zone-outline" /><span className="zone-label">PPE MONITORING AREA</span><div className="env-sensor"><Wind size={16} /><span>ENVIRONMENT NODE</span></div></div><div className="safety-metrics">{[[Thermometer, "TEMPERATURE", "Sensor input"], [Wind, "HUMIDITY / AIR", "Environmental sensing"], [AlertTriangle, "GAS LEVEL", "Threshold monitoring"]].map(([Icon, title, sub]) => { const I = Icon as typeof Activity; return <div className="safety-metric" key={title as string}><I size={16} /><div><strong>{title as string}</strong><span>{sub as string}</span></div><b>—</b></div>; })}</div><p className="viz-note">Safety events and PPE checks are proposed. No worker attendance or productivity scoring.</p></div>;
-  if (slide === 7) return <div className="architecture-visual"><div className="arch-flow">SENSORS <ArrowRight size={14} /> EDGE <ArrowRight size={14} /> PLATFORM <ArrowRight size={14} /> USERS & ERP/MES</div>{[
-    ["04", "CLIENT LAYER", "Factory dashboard", "Reports & alerts", "Role-based access", "#7bb9ff"],
-    ["03", "APPLICATION LAYER", "Device & data services", "Factory operations", "Alerts & integration", "#54d5c7"],
-    ["02", "AI, DATA & INTEGRATION", "AI services", "Operational database", "ERP / MES", "#b99aff"],
-    ["01", "INDUSTRIAL EDGE LAYER", "Machine & product sensors", "Environment & safety", "ESP32 + vision gateway", "#7bd1a6"],
-  ].map((layer) => <div className="arch-layer" key={layer[0]} style={{ "--layer-color": layer[5] } as React.CSSProperties}><div className="arch-layer-name"><small>{layer[0]}</small><strong>{layer[1]}</strong></div><div className="arch-modules">{layer.slice(2, 5).map((m) => <span key={m}>{m}</span>)}</div></div>)}<div className="arch-protocol">MQTT / HTTPS over TLS <span>·</span> secure data flow: collect → transmit → analyze → store → notify</div></div>;
-  if (slide === 8) return <div className="dashboard-demo"><div className="dashboard-top"><div><i /> <span>BIIL / FACTORY OVERVIEW</span></div><small>DEMONSTRATION DATA · NOT PROJECT RESULTS</small></div><div className="dashboard-kpis">{[["MACHINE STATUS", "Monitoring view", "#70d7bd"], ["PRODUCTION", "Progress view", "#81b8ff"], ["QUALITY", "Inspection view", "#c49aff"], ["ENERGY", "Usage view", "#f2bd69"]].map((k) => <div className="dashboard-kpi" key={k[0]}><small>{k[0]}</small><i style={{ background: k[2] }} /><strong>{k[1]}</strong><span>Illustrative UI</span></div>)}</div><div className="dash-panels"><div className="dash-chart"><div className="panel-title">PRODUCTION ACTIVITY <span>concept visualization</span></div><div className="dash-gridlines" /> <svg viewBox="0 0 450 130" preserveAspectRatio="none" aria-label="Illustrative production chart"><path d="M0 100 C40 85 52 89 84 72 S130 80 156 59 S200 68 232 52 S280 60 305 37 S352 49 382 25 S420 31 450 15" fill="none" stroke="#60d3cb" strokeWidth="2.5" /><path d="M0 100 C40 85 52 89 84 72 S130 80 156 59 S200 68 232 52 S280 60 305 37 S352 49 382 25 S420 31 450 15 L450 130 L0 130Z" fill="url(#chartFill)" opacity=".2" /><defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop stopColor="#60d3cb" /><stop offset="1" stopColor="#60d3cb" stopOpacity="0" /></linearGradient></defs></svg><div className="chart-x"><span>SHIFT START</span><span>PRODUCTION TIMELINE</span><span>SHIFT END</span></div></div><div className="alerts-panel"><div className="panel-title">ALERTS & REPORTS <span>concept</span></div>{[["MAINTENANCE", "Anomaly review queue", "amber"], ["QUALITY", "Inspection report", "purple"], ["SAFETY", "Environmental threshold", "green"]].map((a) => <div className="alert-line" key={a[0]}><i className={a[2]} /><div><small>{a[0]}</small><strong>{a[1]}</strong></div><ArrowRight size={13} /></div>)}</div></div></div>;
-  if (slide === 9) {
+  if (slide === 0) return <div className="hero-stats">{[["01", "UNIFIED", "industrial intelligence layer"], ["02", "MODULAR", "pilot line to wider scale"], ["03", "PROPOSED", "FYDP-I system design"]].map((item) => <div key={item[0]} role="group" aria-label={`${item[1]}: ${item[2]}`}><span>{item[0]}</span><strong>{item[1]}</strong><small>{item[2]}</small></div>)}</div>;
+  if (slide === 1) return <div className="problem-board"><div className="problem-board-top"><span>OPERATIONAL SIGNALS</span><span className="status muted"><i /> DISCONNECTED VIEW</span></div><div className="problem-lines">{problems.map((p, i) => <div className="problem-row" key={p[0]} role="group" aria-label={p[0]}><span className="problem-index">{p[2]}</span><strong className="problem-label">{p[0]}</strong><div className="problem-graph"><i style={{ width: `${29 + (i * 19) % 68}%`, animationDelay: `${i * 0.12}s` }} /></div><span className="problem-warning"><AlertTriangle size={14} /></span></div>)}</div><p className="viz-note">Seven documented operational challenges · problem statement, §1.1</p></div>;
+  if (slide === 2) return <div className="objectives-board">{objectives.map((item, i) => <div className="objective-item" key={item} role="group" aria-label={`Objective ${i + 1}: ${item}`}><span><Target size={15} />{String(i + 1).padStart(2, "0")}</span><p>{item}</p></div>)}</div>;
+  if (slide === 3) return <div className="literature-board">{literature.map((item, i) => <article className="literature-card" key={item.title} role="group" aria-label={`${item.title}. ${item.text}`}><div className="literature-card-head"><BookOpen size={15} /><span>0{i + 1}</span><small>{item.tag}</small></div><h3>{item.title}</h3><p>{item.text}</p><footer><FileText size={13} />{item.refs}</footer></article>)}<p className="literature-caveat">Published-study findings only · none are BIIL test results.</p></div>;
+  if (slide === 4) return <div className="domain-explorer gap-explorer"><div className="domain-orbit"><div className="orbit-core">BIIL<span>RESEARCH GAP</span></div><div className="orbit-ring" />{gapResponses.map((gap, i) => { const Icon = [Activity, Layers3, ScanLine, Network, HardDrive][i]; return <button key={gap.title} data-slide-interaction data-activate-on-arrow tabIndex={0} aria-pressed={selectedGap === i} className={`orbit-node ${selectedGap === i ? "selected" : ""}`} style={{ "--angle": `${i * 72 - 90}deg`, "--node-index": i, "--domain-color": ["#74d9c8", "#7bb9ff", "#c4a3ff", "#ffd07a", "#88d8ff"][i] } as React.CSSProperties} onClick={() => setSelectedGap(i)} aria-label={`Explore gap ${i + 1}: ${gap.title}`}><Icon className="orbit-node-icon" size={19} /><span className="orbit-node-number">{String(i + 1).padStart(2, "0")}</span><span className="orbit-node-label">{gap.label}</span><div className="orbit-expanded-content"><strong>{gap.title}</strong><small>DOCUMENTED GAP</small><p>{gap.detail}</p></div></button>; })}</div><div className="domain-detail gap-detail"><div className="domain-detail-heading"><span className="domain-number">0{selectedGap + 1}</span><div><strong>{gapResponses[selectedGap].title}</strong><span>{gapResponses[selectedGap].label}</span></div></div><div className="gap-response-copy"><small>BIIL RESPONSE</small><p>{gapResponses[selectedGap].response}</p></div></div><div className="gap-banner"><span>BIIL</span><ArrowRight size={17} /><strong>Affordable · Integrated · Modular</strong><small>ONE PROPOSED INTELLIGENCE LAYER</small></div></div>;
+  if (slide === 5) return <div className="method-flow">{methodSteps.map((step) => <div className="method-step" key={step[0]} role="group" aria-label={`${step[1]}: ${step[2]}`}><span>{step[0]}</span><div><strong>{step[1]}</strong><p>{step[2]}</p></div><ArrowRight size={16} /></div>)}<p className="method-note">Proposed end-to-end flow · initial validation at the edge precedes central processing.</p></div>;
+  if (slide === 6) return <div className="vision-demo"><div className="vision-head"><span><Camera size={15} /> INDUSTRIAL INSPECTION · CONCEPT</span><span className="demo-tag">PROPOSED PIPELINE</span></div><div className="fabric-scan"><div className="fabric-texture" /><div className="scan-beam" /><div className="fabric-defect defect-one" /><div className="fabric-defect defect-two" /><div className="detection-box"><span>DEFECT REGION</span></div><div className="scan-camera"><Camera size={18} /><span>FIXED CAMERA</span></div><div className="scan-caption">SCANNING SURFACE · SCHEMATIC</div></div><div className="pipeline-steps">{[["01", "Capture", "Industrial camera"], ["02", "Preprocess", "OpenCV · ROI"], ["03", "Rule checks", "Threshold · morphology"], ["04", "Learned detection", "Lightweight model"], ["05", "Report", "Type · location · confidence"]].map((s, i) => <div className={`pipeline-step ${i === 2 ? "active" : ""}`} key={s[0]} role="group" aria-label={`${s[1]}: ${s[2]}`}><small>{s[0]}</small><strong>{s[1]}</strong><span>{s[2]}</span></div>)}</div><p className="viz-note">Proposed hybrid pipeline · no BIIL model performance is claimed.</p></div>;
+  if (slide === 7) return <ArchitectureDiagram />;
+  if (slide === 8) return <RoadmapBudgetViz />;
+  if (slide === 9) return <DeliverablesViz />;
+  if (slide === 10) {
     const components = standard
       ? ["Raspberry Pi 5 · 8GB", "Raspberry Pi AI HAT+ 2", "Waveshare ESP32-S3 · RS-485 · PoE · 8DI/8DO", "Dahua IPC-HFW2431SP-S camera", "SHT35 · MQ-135 · SDM120 energy meter", "5V Fixed Output DC-DC Buck Converter", "801S Vibration Sensor", "MH-ET LIVE Barcode Scanner V3.0", "24V DIN-rail PSU & protection", "Enclosure · wiring · terminals allowance"]
       : ["Raspberry Pi 5 · 8GB", "Raspberry Pi AI HAT+ 2", "Jetson Orin Nano Developer Kit Super · 8GB", "Waveshare ESP32-S3 · RS-485 · PoE · 8DI/8DO", "Hikvision DS-2CD2T47G2-L camera", "Sensirion SHT85 · MQ-2 · MQ-5 · MQ-135", "Isolated 4–20 mA / RS-485 interface", "SDM120 single-phase · SDM630 three-phase", "MAX31865 · PT100 · ADXL356* · GM65 barcode", "Mean Well TDR-240-24 · Marsriva KP9 UPS · MSI Spatium 500GB SSD", "Enclosure · wiring · terminals allowance"];
     const software = ["NestJS (Node.js) → Express.js · Fastify · Spring Boot", "Django → FastAPI · Flask · NestJS", "MERN → MEVN · PERN · React + NestJS + PostgreSQL", "PHP (Laravel) → Symfony · CodeIgniter · Django · NestJS"];
-    return <div className="hardware-explorer"><div className="hardware-switch"><button className={!standard ? "active" : ""} onClick={() => setStandard(false)}>Premium configuration</button><button className={standard ? "active" : ""} onClick={() => setStandard(true)}>Standard configuration</button></div><div className="hardware-assembly">{components.map((name, i) => { const Icon = [Cpu, Box, Camera, HardDrive][i % 4]; return <div className="hardware-component" key={name} style={{ "--component-order": i } as React.CSSProperties}><div className={`hardware-icon hardware-${i % 4}`}><Icon size={20} /></div><div><small>COMPONENT {String(i + 1).padStart(2, "0")}</small><strong>{name}</strong></div><span className="hardware-link" /></div>; })}</div><div className="software-stack"><small>PROPOSED SOFTWARE ALTERNATIVES · TABLE 3.10</small>{software.map((item) => <span key={item}>{item}</span>)}</div><p className="viz-note">Premium is not mandatory for the Standard pilot. *Report note: ADXL356 listing links to ADXL346; Standard SHT35 is marked “2pic” but budgeted as one item—verify before purchase.</p></div>;
+    const budgetSummaries = [
+      ["PREMIUM ESTIMATE", "BDT 2,315,816.72–2,317,816.72", "HR 1,980,000 · software 59,111.72 · hardware 276,705–278,705"],
+      ["STANDARD ESTIMATE", "BDT 1,392,986.72–1,395,986.72", "HR 1,245,000 · software 59,111.72 · hardware 88,875–91,875"],
+    ];
+    return <div className="hardware-explorer"><div className="hardware-switch"><button data-budget-tab="premium" aria-label="Premium budget hardware configuration" aria-pressed={!standard} className={!standard ? "active" : ""} onClick={() => setStandard(false)}>Premium budget</button><button data-budget-tab="standard" aria-label="Standard budget hardware configuration" aria-pressed={standard} className={standard ? "active" : ""} onClick={() => setStandard(true)}>Standard budget</button></div><div className="hardware-assembly">{components.map((name, i) => { const Icon = [Cpu, Box, Camera, HardDrive][i % 4]; return <div className="hardware-component" key={name} role="group" aria-label={name} style={{ "--component-order": i } as React.CSSProperties}><div className={`hardware-icon hardware-${i % 4}`}><Icon size={20} /></div><div><small>COMPONENT {String(i + 1).padStart(2, "0")}</small><strong>{name}</strong></div><span className="hardware-link" /></div>; })}</div><div className="software-stack"><small>PROPOSED SOFTWARE ALTERNATIVES · TABLE 3.10</small>{software.map((item) => <span key={item}>{item}</span>)}</div><div className="hardware-budget">{budgetSummaries.map((item) => <div className="hardware-budget-card" key={item[0]} role="group" aria-label={`${item[0]} ${item[1]}`}><small>{item[0]}</small><strong>{item[1]}</strong><span>{item[2]}</span></div>)}</div><p className="viz-note">Premium is not mandatory for the Standard pilot. *Report note: ADXL356 listing links to ADXL346; Standard SHT35 is marked “2pic” but budgeted as one item—verify before purchase.</p></div>;
   }
-  if (slide === 10) return <div className="roadmap-budget"><div className="roadmap"><div className="roadmap-line" />{[
-    ["01", "Requirements & Design", "Requirements · architecture · component selection", "Months 1–2"],
-    ["02", "IoT Deployment", "Sensors · edge devices · cameras · validated data acquisition", "Months 3–5"],
-    ["03", "AI Model Development", "Anomaly & failure models · OpenCV inspection · model testing", "Months 6–8"],
-    ["04", "Dashboard & Pilot", "Dashboard · reports · alerts · ERP/MES link · user testing", "Months 9–10"],
-    ["05", "Optimization & Commercialization", "Performance optimization · model refinement · final documentation · commercialization plan", "Months 11–12"],
-  ].map((p, i) => <div className="roadmap-phase" key={p[0]}><div className={`roadmap-dot ${i === 0 ? "done" : ""}`}>{p[0]}</div><div><strong>{p[1]}</strong><span>{p[2]}</span></div><small>{p[3]}</small></div>)}</div><div className="budget-cards">{[["PREMIUM BUDGET", "2,315,816.72–2,317,816.72", "Human resources", "BDT 1,980,000", "Software & cloud", "BDT 59,111.72", "Hardware & equipment", "BDT 276,705–278,705"], ["STANDARD BUDGET", "1,392,986.72–1,395,986.72", "Human resources", "BDT 1,245,000", "Software & cloud", "BDT 59,111.72", "Hardware & equipment", "BDT 88,875–91,875"]].map((b) => <div className="budget-card" key={b[0]}><small>{b[0]} · BDT</small><strong>{b[1]}</strong>{[2, 4, 6].map((i) => <div className="budget-row" key={b[i]}><span>{b[i]}</span><b>{b[i + 1]}</b></div>)}</div>)}</div><div className="schedule-note"><AlertTriangle size={16} /><span><b>Schedule discrepancy in report:</b> Table 3.1 describes 12 months; Figure 3.2 is captioned a full 9-month Gantt. Both are preserved here, not reconciled.</span></div></div>;
-  return <div className="outcomes-board"><div className="outcome-orbit"><div className="outcome-core">BIIL<span>UNIFIED VIEW</span></div>{["Operational visibility", "Earlier problem detection", "Product quality", "Product traceability", "Energy monitoring", "Workplace safety", "Scalable digitalization"].map((o, i) => <div className="outcome-node" key={o} style={{ "--outcome-angle": `${i * 51.43 - 90}deg` } as React.CSSProperties}><span>{String(i + 1).padStart(2, "0")}</span>{o}</div>)}</div><div className="closing-signoff"><span>PROPOSED OUTCOMES · NOT MEASURED RESULTS</span><strong>Thank you.</strong><p>Questions & discussion</p><div className="closing-supervisor"><SupervisorPortrait /><span>SUPERVISOR</span><b>Md. Habibullah Belali</b></div><TeamStrip /></div></div>;
+  return <div className="outcomes-board"><div className="outcome-orbit"><div className="outcome-core">BIIL<span>UNIFIED VIEW</span></div>{["Operational visibility", "Earlier problem detection", "Product quality", "Product traceability", "Energy monitoring", "Workplace safety", "Scalable digitalization"].map((o, i) => <div className="outcome-node" key={o} role="group" aria-label={o} style={{ "--outcome-angle": `${i * 51.43 - 90}deg` } as React.CSSProperties}><span>{String(i + 1).padStart(2, "0")}</span>{o}</div>)}</div><div className="closing-signoff"><span>PROPOSED OUTCOMES · NOT MEASURED RESULTS</span><strong>Thank you.</strong><p>Questions & discussion</p><div className="closing-supervisor"><SupervisorPortrait /><span>SUPERVISOR</span><b>Md. Habibullah Belali</b></div><TeamStrip /></div></div>;
 }
 
-function SlideContent({ slide, selectedDomain, setSelectedDomain, anomaly, setAnomaly, standard, setStandard }: {
-  slide: number; selectedDomain: number; setSelectedDomain: (i: number) => void; anomaly: boolean;
-  setAnomaly: (v: boolean) => void; standard: boolean; setStandard: (v: boolean) => void;
+function SlideContent({ slide, selectedGap, setSelectedGap, standard, setStandard }: {
+  slide: number; selectedGap: number; setSelectedGap: (i: number) => void; standard: boolean; setStandard: (v: boolean) => void;
 }) {
-  if (slide === 0) return <div className="content-grid opening-grid"><div className="opening-copy"><p className="hero-kicker"><span className="live-indicator" /> SOUTHEAST UNIVERSITY <span>·</span> CSE 460</p><div className="hero-title-wrap"><span className="hero-mark">B<span>.</span></span><h1 className="hero-title">BIIL</h1><div className="hero-rule" /></div><h2>Bangladesh Industrial<br />Intelligence Layer</h2><p className="hero-subtitle">{teamLead}</p><div className="hero-meta"><span>FINAL YEAR DESIGN PROJECT I</span><span>DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING</span></div><div className="hero-supervisor"><SupervisorPortrait /><div><span>SUPERVISED BY</span><strong>Md. Habibullah Belali</strong><small>Assistant Professor · Department of CSE</small></div></div><TeamStrip /></div><div className="visual-column"><DataViz slide={slide} selectedDomain={selectedDomain} setSelectedDomain={setSelectedDomain} anomaly={anomaly} setAnomaly={setAnomaly} standard={standard} setStandard={setStandard} /><p className="visual-caption"><span>CONCEPTUAL DIGITAL TWIN</span><span>PROPOSED SYSTEM · FYDP-I</span></p></div></div>;
+  if (slide === 0) return <div className="content-grid opening-grid"><div className="opening-copy"><p className="hero-kicker"><span className="live-indicator" /> SOUTHEAST UNIVERSITY <span>·</span> CSE 460</p><div className="hero-title-wrap"><span className="hero-mark">B<span>.</span></span><h1 className="hero-title">BIIL</h1><div className="hero-rule" /></div><h2>Bangladesh Industrial<br />Intelligence Layer</h2><p className="hero-subtitle">{teamLead}</p><div className="hero-meta"><span>FINAL YEAR DESIGN PROJECT I</span><span>DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING</span></div><div className="hero-supervisor"><SupervisorPortrait /><div><span>SUPERVISED BY</span><strong>Md. Habibullah Belali</strong><small>Assistant Professor · Department of CSE</small></div></div><TeamStrip /></div><div className="visual-column"><DataViz slide={slide} selectedGap={selectedGap} setSelectedGap={setSelectedGap} standard={standard} setStandard={setStandard} /><p className="visual-caption"><span>CONCEPTUAL DIGITAL TWIN</span><span>PROPOSED SYSTEM · FYDP-I</span></p></div></div>;
   const copy: Record<number, [string, string, string, string[]]> = {
-    1: ["02 / THE INDUSTRIAL PROBLEM", "A factory can be busy—and still be hard to read.", "Seven operational blind spots documented in the report make timely, joined-up decisions difficult.", ["Machine events surface after stoppage", "Quality checks can happen downstream", "Systems hold separate pieces of context"]],
-    2: ["03 / THE BIIL VISION", "One factory. Multiple intelligence sources. One unified operational view.", "BIIL is proposed as a modular layer connecting near-machine signals, analysis and the people who act on them.", ["Collect from machines, cameras & sensors", "Validate and process data at the edge", "Present relevant information to authorized users"]],
-    3: ["04 / SIX INTELLIGENCE DOMAINS", "Six capabilities. One connected operational picture.", "Select a domain to trace its proposed inputs, processing and outputs.", ["Machine · Production · Quality", "Energy · Environmental & Safety", "Factory Analytics"]],
-    4: ["05 / MACHINE INTELLIGENCE", "Move from raw telemetry toward an earlier warning.", "The proposed pipeline validates sensor readings, searches for anomalies and supports maintenance decisions.", ["Inputs: temperature, vibration, current, power & RPM", "Acquisition → validation → anomaly detection", "Prediction and maintenance alerts are planned"]],
-    5: ["06 / COMPUTER VISION QUALITY", "A hybrid inspection path—rules plus learned detection.", "The report proposes a camera-to-dashboard pipeline using OpenCV preprocessing and a lightweight detector.", ["Capture and normalize fabric imagery", "Rule-based threshold, morphology & contour checks", "Classify, locate and report candidate defects"]],
-    6: ["07 / SAFETY & ENVIRONMENT", "Give safety and environmental signals a place in the same view.", "Proposed monitoring combines camera-based PPE checks with environmental sensors and alerting.", ["PPE and safety-event monitoring", "Temperature, humidity, air quality & gas", "Alerts for authorized factory users"]],
-    7: ["08 / SYSTEM ARCHITECTURE", "Four layers carry signals from the factory floor to decisions.", "This view follows Figure 3.3: edge collection, AI/data/integration, application services and authorized clients.", ["Edge: sensors, ESP32 & vision gateway", "AI, operational data, storage & ERP/MES", "Application services, dashboards & role-based access"]],
-    8: ["09 / THE BIIL COMMAND CENTER", "Operational context, not another disconnected screen.", "A product-interface concept for bringing machine, production, quality, energy, safety and maintenance views together.", ["Factory overview and line status", "Quality, energy & environmental views", "Alerts, reports & analytics"]],
-    9: ["10 / HARDWARE & TECHNOLOGY", "A modular edge kit—with a lower-cost pilot path.", "Compare the report's premium and standard BOM concepts. The proposed software table lists alternatives, not one chosen stack.", ["Standard BOM (§3.2.3): Pi 5 8GB, AI HAT+ 2, Waveshare ESP32-S3 RS-485 PoE 8DI/8DO, Dahua IPC-HFW2431SP-S, SHT35, MQ-135 & SDM120.", "Also: 5V fixed-output DC-DC, 801S vibration, MH-ET LIVE Barcode Scanner V3.0, 24V DIN-rail PSU/protection and enclosure/wiring allowance.", "Report flags ADXL356→ADXL346 source mismatch; Standard SHT35 says “2pic” but is budgeted as one item. Verify both."]],
-    10: ["11 / ROADMAP & INVESTMENT", "Five planned phases. Two cost scenarios.", "The report's phase outputs and estimated BDT totals are shown alongside its schedule discrepancy.", ["Timeline and budgets are estimates in the report", "Hardware allowances create budget ranges", "The 9-month / 12-month discrepancy is explicit"]],
-    11: ["12 / THE INTENDED OUTCOME", "From fragmented factory operations to unified industrial intelligence.", "BIIL's intended value is clearer operational visibility across machine health, quality, traceability, energy and safety.", ["Proposed platform—not a deployed system", "Prototype development is future work", "Outcomes remain intended, not measured"]],
+    1: ["02 / PROBLEM STATEMENT", "Seven operational problems keep factory information fragmented.", "The report identifies issues that make it difficult for staff and management to see conditions and respond in time.", ["Breakdowns, limited real-time monitoring and late defect discovery", "Energy waste and limited product traceability", "Safety risks, delayed alerts and data split across systems"]],
+    2: ["03 / AIM & OBJECTIVES", "What BIIL is designed to help a factory do.", "The project aims to design an affordable industrial platform for garment, textile and other factories in Bangladesh.", ["Monitor machine condition and production; detect anomalies and support failure prediction", "Inspect quality; track products; monitor energy and environment", "Improve safety with PPE monitoring; provide dashboards, reports, recommendations and ERP/MES support"]],
+    3: ["04 / LITERATURE REVIEW", "Prior work offers evidence—and design cautions.", "The report reviews connected-factory applications and fabric-inspection research to inform BIIL's proposed scope.", ["Industry cases combine monitoring, predictive maintenance, quality and energy use", "Fabric studies compare traditional vision with learned detectors", "Reported study metrics are literature findings—not BIIL results"]],
+    4: ["05 / RESEARCH GAP & BIIL RESPONSE", "A modular intelligence layer for local factory realities.", "The report identifies affordability, fragmented single-function systems, variable factory imagery and ERP/MES continuity as gaps.", ["Unify machine, production, quality, energy, safety and analytics", "Begin with a pilot line and scale modularly", "Complement existing ERP/MES systems rather than replace them"]],
+    5: ["06 / METHODOLOGY & PLAN", "A validated data path from the line to an operational decision.", "The proposed method combines edge collection and validation with central AI/data services and role-aware delivery.", ["Collect from sensors, cameras and product scanners", "Validate and preprocess at the edge; transmit securely", "Analyze, store and deliver dashboards, alerts, reports and integrations"]],
+    6: ["07 / PROPOSED QUALITY METHODOLOGY", "Hybrid fabric inspection: rules plus learned detection.", "Figure 2.4's proposed pipeline combines OpenCV capture/preprocessing and rule-based checks with a lightweight detector.", ["Capture, normalize illumination and select a region of interest", "Threshold, morphology and contour/edge checks", "Classify and report defect type, location and confidence"]],
+    7: ["08 / SYSTEM ARCHITECTURE", "Four layers carry data from industrial edge to authorized users.", "This view follows Figure 3.3: industrial edge; AI, data and integration; application; client.", ["Sensors, ESP32 and vision gateway", "AI services, operational database, image/report storage and ERP/MES", "Device/data services, factory operations, alerts and role-based clients"]],
+    8: ["09 / PROJECT TIMELINE", "Five phases structure the planned development work.", "Table 3.1 describes a 12-month plan from requirements through optimization and commercialization.", ["Requirements & Design · IoT Deployment · AI Model Development", "Dashboard & Pilot · Optimization & Commercialization", "The report separately captions Figure 3.2 as a full 9-month Gantt"]],
+    9: ["10 / EXPECTED DELIVERABLES", "A proposed prototype spanning edge, AI and factory operations.", "The report describes expected outputs across phases. FYDP-I documents the design package; later development, pilot and deployment remain planned work.", ["FYDP-I design package: requirements, architecture, use-case/data-flow diagrams and component selection", "Planned edge pipeline, anomaly/failure models and OpenCV inspection", "Planned dashboard, reports, ERP/MES link, pilot tests and final prototype"]],
+    10: ["11 / IMPLEMENTATION RESOURCES", "Two estimated configurations support different pilot scopes.", "The report compares Premium and Standard budgets. Table 3.10 lists software alternatives, not a selected production stack.", ["Standard estimate BDT 1,392,986.72–1,395,986.72; Pi 5 8GB, AI HAT+ 2, ESP32-S3, Dahua camera and core sensing", "Premium estimate BDT 2,315,816.72–2,317,816.72; adds Jetson Orin Nano Super, Hikvision camera and broader sensing", "Verify ADXL356/ADXL346 and Standard SHT35 “2pic” notes before purchase"]],
+    11: ["12 / CONCLUSION", "BIIL proposes one view across fragmented factory operations.", "The project report defines the problem, objectives, literature context, proposed method, architecture, schedule and expected prototype.", ["The intended outcome is a working factory-monitoring prototype", "Operational visibility, quality, traceability, energy and safety are target areas", "Development and evaluation remain future work described by the plan"]],
   };
   const [eyebrow, title, subtitle, bullets] = copy[slide];
   const evidenceLabels: Record<number, string> = {
-    1: "DOCUMENTED OPERATIONAL CHALLENGES",
-    2: "PROPOSED PLATFORM CONCEPT",
-    3: "PROPOSED FUNCTIONAL SCOPE",
-    4: "PLANNED DEVELOPMENT PIPELINE",
-    5: "PROPOSED INSPECTION FLOW",
-    6: "PROPOSED MONITORING SCOPE",
+    1: "DOCUMENTED PROBLEM STATEMENT",
+    2: "PROJECT OBJECTIVES · REPORT §1.2",
+    3: "LITERATURE REVIEW · CITED STUDIES",
+    4: "RESEARCH GAP · PROPOSED BIIL RESPONSE",
+    5: "PROPOSED METHODOLOGY",
+    6: "PROPOSED INSPECTION FLOW",
     7: "PROPOSED ARCHITECTURE · FIGURE 3.3",
-    8: "ILLUSTRATIVE DEMONSTRATION UI",
-    9: "ESTIMATED BOM · PROPOSED TECHNOLOGY OPTIONS",
-    10: "PLANNED PHASES · REPORTED ESTIMATES",
-    11: "INTENDED OUTCOMES · NOT MEASURED",
+    8: "PROJECT PLAN · REPORT TIMELINE",
+    9: "EXPECTED DELIVERABLES · NOT COMPLETED CLAIMS",
+    10: "PROPOSED BOM · ESTIMATED BUDGETS",
+    11: "CONCLUSION · INTENDED OUTCOMES",
+  };
+  const visualLabels: Record<number, string> = {
+    1: "SEVEN DOCUMENTED PROBLEMS",
+    2: "OBJECTIVES · REPORT §1.2",
+    3: "CITED STUDIES · NOT BIIL RESULTS",
+    4: "SIX PROPOSED INTELLIGENCE DOMAINS",
+    5: "PROPOSED END-TO-END METHOD",
+    6: "PROPOSED HYBRID PIPELINE · FIGURE 2.4",
+    7: "SYSTEM ARCHITECTURE · FIGURE 3.3",
+    8: "TIMELINE · TABLE 3.1 AND FIGURE 3.2",
+    9: "PLANNED OUTPUTS · PHASES 1–5",
+    10: "CONFIGURATIONS, COSTS AND OPTIONS",
+    11: "INTENDED OUTCOMES · NOT MEASURED RESULTS",
   };
   return <div className={`content-grid scene-${slide}`}>
     <div className="slide-copy"><SlideHeading eyebrow={eyebrow} title={title} subtitle={subtitle} />
-      <div className="key-points">{bullets.map((item, i) => <div className="key-point" key={item}><span>{String(i + 1).padStart(2, "0")}</span><p>{item}</p></div>)}</div>
+      <div className="key-points">{bullets.map((item, i) => <div className="key-point" key={item} role="group" aria-label={item}><span>{String(i + 1).padStart(2, "0")}</span><p>{item}</p></div>)}</div>
       <div className="scope-label"><span className="scope-dot" /> {evidenceLabels[slide]} <span className="scope-divider">/</span> FYDP-I REPORT</div>
     </div>
-    <div className="visual-column"><DataViz slide={slide} selectedDomain={selectedDomain} setSelectedDomain={setSelectedDomain} anomaly={anomaly} setAnomaly={setAnomaly} standard={standard} setStandard={setStandard} /><p className="visual-caption"><span>{slide === 7 ? "FIGURE 3.3 · SYSTEM ARCHITECTURE" : slide === 10 ? "ESTIMATES FROM TABLES 3.2–3.8" : "PROPOSED SYSTEM VISUALIZATION"}</span><span>{String(slide + 1).padStart(2, "0")} / 12</span></p></div>
+    <div className="visual-column"><DataViz slide={slide} selectedGap={selectedGap} setSelectedGap={setSelectedGap} standard={standard} setStandard={setStandard} /><p className="visual-caption"><span>{visualLabels[slide]}</span><span>{String(slide + 1).padStart(2, "0")} / 12</span></p></div>
   </div>;
 }
 
@@ -359,8 +463,7 @@ export default function Presentation() {
   const [overview, setOverview] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [notes, setNotes] = useState(false);
-  const [selectedDomain, setSelectedDomain] = useState(0);
-  const [anomaly, setAnomaly] = useState(false);
+  const [selectedGap, setSelectedGap] = useState(0);
   const [standard, setStandard] = useState(false);
   const world = useRef<WorldState>({ stage: 0, reveal: 0 });
   const root = useRef<HTMLDivElement>(null);
@@ -378,6 +481,7 @@ export default function Presentation() {
     requestedRef.current = target;
     if (busyRef.current) return;
     busyRef.current = true;
+    if (root.current?.contains(document.activeElement) && document.activeElement instanceof HTMLElement) document.activeElement.blur();
     const destination = requestedRef.current;
     if (reduceMotion.current) {
       world.current.stage = destination;
@@ -442,8 +546,27 @@ export default function Presentation() {
     const onKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (target?.matches("input, textarea, select, [contenteditable='true']")) return;
-      if (event.key === "ArrowRight" || event.key === " ") { event.preventDefault(); navigate(1); }
+      if (event.key === "ArrowRight" || (event.key === " " && !(target instanceof HTMLButtonElement))) { event.preventDefault(); navigate(1); }
       else if (event.key === "ArrowLeft") { event.preventDefault(); navigate(-1); }
+      else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        if (busyRef.current) return;
+        if (!overview && slideRef.current === 10) {
+          const tab = root.current?.querySelector<HTMLButtonElement>(`[data-budget-tab="${event.key === "ArrowDown" ? "standard" : "premium"}"]`);
+          if (tab) { tab.focus({ preventScroll: true }); tab.click(); }
+          return;
+        }
+        const selector = overview ? ".overview-panel .overview-card" : slideRef.current === 4 ? ".slide-content .domain-explorer .orbit-node" : null;
+        const controls = selector ? Array.from(root.current?.querySelectorAll<HTMLElement>(selector) ?? []).filter((element) => !element.hasAttribute("disabled")) : [];
+        if (controls.length) {
+          const current = controls.indexOf(document.activeElement as HTMLElement);
+          const step = event.key === "ArrowDown" ? 1 : -1;
+          const next = current < 0 ? (step > 0 ? 0 : controls.length - 1) : (current + step + controls.length) % controls.length;
+          controls[next].focus({ preventScroll: true });
+          if (controls[next].hasAttribute("data-activate-on-arrow") && controls[next] instanceof HTMLButtonElement) controls[next].click();
+          controls[next].scrollIntoView({ block: "nearest", behavior: reduceMotion.current ? "auto" : "smooth" });
+        }
+      }
       else if (event.key === "Escape") { if (overview) setOverview(false); else if (document.fullscreenElement) void document.exitFullscreen(); }
       else if (event.key.toLowerCase() === "o") setOverview((v) => !v);
       else if (event.key.toLowerCase() === "n") setNotes((v) => !v);
@@ -453,18 +576,19 @@ export default function Presentation() {
     return () => {
       document.removeEventListener("fullscreenchange", onFullscreen);
       window.removeEventListener("keydown", onKey);
-      timelineRef.current?.kill();
     };
   }, [enterFullscreen, navigate, overview]);
 
+  useEffect(() => () => { timelineRef.current?.kill(); }, []);
+
   return <main className={`presentation ${isFullscreen ? "fullscreen" : ""}`} ref={root}>
-    <div className="world-canvas" aria-hidden="true"><Canvas fallback={<div className="webgl-fallback"><span>3D VIEW UNAVAILABLE</span><small>Presentation content and controls remain available.</small></div>} dpr={[1, 1.55]} camera={{ position: [0, 3.1, 9.4], fov: 43 }} gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}><IndustrialWorld world={world} /></Canvas></div>
+    <div className="world-canvas" aria-hidden="true"><Canvas fallback={<div className="webgl-fallback"><span>3D VIEW UNAVAILABLE</span><small>Presentation content and controls remain available.</small></div>} dpr={[1, 1.55]} camera={{ position: [0, 3.7, 12.6], fov: 45 }} gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}><IndustrialWorld world={world} /></Canvas></div>
     <div className="atmosphere" aria-hidden="true" />
     <div className="topbar"><a className="brand" href="#presentation" aria-label="BIIL presentation home"><span className="brand-symbol">B<span>.</span></span><span className="brand-name">BIIL<small>INDUSTRIAL INTELLIGENCE</small></span></a><div className="top-center"><span className="status-dot" /> <span>PROJECT DEFENSE</span><i /> <span>SOUTHEAST UNIVERSITY</span></div><div className="top-actions"><span className="course-pill">FYDP-I <i /> CSE 460</span><button className="icon-button" onClick={() => setNotes((v) => !v)} aria-label="Toggle presenter notes"><CircleHelp size={17} /></button><button className="icon-button" onClick={() => setOverview(true)} aria-label="Open slide overview"><Layers3 size={17} /></button><button className="icon-button" onClick={() => void enterFullscreen()} aria-label="Toggle fullscreen">{isFullscreen ? <Minimize size={17} /> : <Maximize size={17} />}</button></div></div>
-    <div className="slide-stage" id="presentation"><div className="world-vignette" /><div ref={content} className="slide-content"><AnimatePresence mode="wait"><motion.div key={slide} className="scene-shell" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.28 }}><SlideContent slide={slide} selectedDomain={selectedDomain} setSelectedDomain={setSelectedDomain} anomaly={anomaly} setAnomaly={setAnomaly} standard={standard} setStandard={setStandard} /></motion.div></AnimatePresence></div></div>
+    <div className="slide-stage" id="presentation"><div className="world-vignette" /><div ref={content} className="slide-content"><AnimatePresence mode="wait"><motion.div key={slide} className="scene-shell" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.28 }}><SlideContent slide={slide} selectedGap={selectedGap} setSelectedGap={setSelectedGap} standard={standard} setStandard={setStandard} /></motion.div></AnimatePresence></div></div>
     {notes && <aside className="presenter-note"><button onClick={() => setNotes(false)} aria-label="Close notes"><X size={15} /></button><small>PRESENTER NOTE</small><p>All BIIL functions are proposed in the FYDP-I report. The dashboard and sensor values in this presentation are illustrative demonstrations, not results from a deployed system.</p></aside>}
     <footer className="control-bar"><div className="slide-ident"><span>{String(slide + 1).padStart(2, "0")}</span><i />{chapters[slide]}</div><div className="progress-track" aria-label={`Slide ${slide + 1} of ${chapters.length}`}><div className="progress-fill" style={{ width: `${((slide + 1) / chapters.length) * 100}%` }} />{chapters.map((name, i) => <button key={name} style={{ left: `${(i / (chapters.length - 1)) * 100}%` }} className={`progress-mark ${i === slide ? "active" : ""}`} onClick={() => startTransition(i)} aria-label={`Go to slide ${i + 1}: ${name}`} />)}</div><div className="nav-controls"><button className="nav-button" onClick={() => navigate(-1)} disabled={slide === 0} aria-label="Previous slide"><ArrowLeft size={16} /></button><span>{String(slide + 1).padStart(2, "0")}<i>/</i>12</span><button className="nav-button next" onClick={() => navigate(1)} disabled={slide === 11} aria-label="Next slide"><ArrowRight size={16} /></button></div></footer>
-    <div className="keyboard-hint"><span>←</span><span>→</span> TO NAVIGATE <i /> O OVERVIEW <i /> F FULLSCREEN</div>
+    <div className="keyboard-hint"><span>←</span><span>→</span> SLIDES {overview ? <><i /><span>↑</span><span>↓</span> CHOOSE · ENTER OPEN</> : slide === 4 ? <><i /><span>↑</span><span>↓</span> SELECT DOMAIN</> : null}<i /> O OVERVIEW <i /> F FULLSCREEN</div>
     {overview && <div className="overview-backdrop" role="dialog" aria-modal="true" aria-label="Slide overview" onClick={(e) => { if (e.target === e.currentTarget) setOverview(false); }}><div className="overview-panel"><div className="overview-heading"><div><small>PRESENTATION MAP</small><h2>All scenes</h2></div><button className="icon-button" onClick={() => setOverview(false)} aria-label="Close overview"><X size={18} /></button></div><div className="overview-grid">{chapters.map((name, i) => <button className={`overview-card ${slide === i ? "current" : ""}`} key={name} onClick={() => { setOverview(false); startTransition(i); }}><span>{String(i + 1).padStart(2, "0")}</span><strong>{name}</strong><ArrowRight size={14} /></button>)}</div></div></div>}
   </main>;
 }

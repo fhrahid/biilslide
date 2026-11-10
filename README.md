@@ -26,14 +26,17 @@ npm start
 
 ## Presentation controls
 
-- `ArrowRight` / `Space`: next scene
+- `ArrowRight`: next scene
+- `Space`: next scene (or activate a focused button)
 - `ArrowLeft`: previous scene
+- `ArrowUp` / `ArrowDown`: select a domain circle on the research-gap scene; switch Premium/Standard budget tabs on slide 11; move through the overview when it is open
+- `Enter`: activate the focused button
 - `O`: scene overview
 - `N`: presenter note (scope reminder)
 - `F`: browser fullscreen
 - `Escape`: close overview or exit fullscreen
 
-The bottom progress markers and previous/next controls are clickable. Select a node in the six-domain scene, compare hardware configurations, and trigger the explicitly simulated motor anomaly. Reduced-motion preferences are respected.
+The bottom progress markers and previous/next controls are clickable. The six-domain selector animates the chosen node into a magnified center view; the hardware scene also allows a direct Premium/Standard comparison. Reduced-motion preferences are respected.
 
 ## Source and accuracy
 
@@ -82,4 +85,5 @@ Push updates to the connected GitHub branch and redeploy using Dokploy. For a lo
 
 - `public/team/`: the five supplied member portraits and supervisor portrait.
 - `docs/FinalVersionBILL.pdf`: the supplied project report.
-- The 3D industrial world is constructed from optimized procedural Three.js geometry; no external GLB/HDR or stock-person assets are required.
+- The factory world and system architecture animation use procedural Three.js geometry; the supplied architecture PNG is retained as a source file but is not rendered.
+- No external GLB/HDR or stock-person assets are required.
