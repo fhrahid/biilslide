@@ -65,10 +65,10 @@ const objectiveGroups = [
 ];
 
 const literature = [
-  { tag: "FABRIC-DEFECT REVIEW", title: "Traditional and learned methods", text: "Guo et al. compare classical image-processing approaches with machine-learning and deep-learning methods for fabric inspection.", refs: "Guo et al. · [5]" },
-  { tag: "REAL-WORLD FABRIC STUDY", title: "Results depend on factory images", text: "Nasim et al. report YOLOv8n mAP 84.8%, precision 0.818 and recall 0.839 across seven defect classes in manufacturing images.", refs: "Nasim et al. · [6]" },
-  { tag: "COMPANY CASE STUDY · BMW", title: "Predictive maintenance and AI inspection", text: "BMW uses conveyor power changes as a wear signal and its AIQX platform analyzes images and sensor data to find missing parts and assembly errors.", refs: "BMW Group · [1] [2]" },
-  { tag: "COMPANY CASE STUDY · SCHNEIDER ELECTRIC", title: "Connected energy monitoring", text: "At Le Vaudreuil, connected sensors and digital platforms support energy management and material-waste reduction.", refs: "World Economic Forum · [8]" },
+  { tag: "FABRIC-DEFECT REVIEW", title: "Traditional and learned methods", refs: "Guo et al. · [5]" },
+  { tag: "REAL-WORLD FABRIC STUDY", title: "Results depend on factory images", refs: "Nasim et al. · [6]" },
+  { tag: "COMPANY CASE STUDY · BMW", title: "Predictive maintenance and AI inspection", refs: "BMW Group · [1] [2]" },
+  { tag: "COMPANY CASE STUDY · SCHNEIDER ELECTRIC", title: "Connected energy monitoring", refs: "World Economic Forum · [8]" },
 ];
 
 const deliverables = [
@@ -466,7 +466,7 @@ function DataViz({ slide, selectedGap, setSelectedGap, standard, setStandard }: 
   if (slide === 0) return <div className="hero-stats">{[["01", "UNIFIED", "industrial intelligence layer"], ["02", "MODULAR", "pilot line to wider scale"], ["03", "PROPOSED", "FYDP-I system design"]].map((item) => <div key={item[0]} role="group" aria-label={`${item[1]}: ${item[2]}`}><span>{item[0]}</span><strong>{item[1]}</strong><small>{item[2]}</small></div>)}</div>;
   if (slide === 1) return <div className="problem-board"><div className="problem-board-top"><span>OPERATIONAL SIGNALS</span><span className="status muted"><i /> DISCONNECTED VIEW</span></div><div className="problem-lines">{problems.map((p, i) => <div className="problem-row" key={p[0]} role="group" aria-label={p[0]}><span className="problem-index">{p[2]}</span><strong className="problem-label">{p[0]}</strong><div className="problem-graph"><i style={{ width: `${29 + (i * 19) % 68}%`, animationDelay: `${i * 0.12}s` }} /></div><span className="problem-warning"><AlertTriangle size={14} /></span></div>)}</div><p className="viz-note">Seven operational problems identified in the project.</p></div>;
   if (slide === 2) return <div className="objective-columns">{objectiveGroups.map((group, i) => <section className="objective-column" key={group.title} style={{ "--objective-color": group.accent, "--objective-index": i } as React.CSSProperties}><header><Target size={17} /><span>0{i + 1}</span><strong>{group.title}</strong></header><ul>{group.items.map((item) => <li key={item}>{item}</li>)}</ul></section>)}</div>;
-  if (slide === 3) return <div className="literature-board">{literature.map((item, i) => <article className="literature-card" key={item.title} role="group" aria-label={`${item.title}. ${item.text}`}><div className="literature-card-head"><BookOpen size={15} /><span>0{i + 1}</span><small>{item.tag}</small></div><h3>{item.title}</h3><p>{item.text}</p><footer><FileText size={13} />{item.refs}</footer></article>)}<p className="literature-caveat">Company cases and published studies inform the proposal; none are BIIL test results.</p></div>;
+  if (slide === 3) return <div className="literature-board">{literature.map((item, i) => <article className="literature-card" key={item.title} role="group" aria-label={`${item.tag}: ${item.title}. ${item.refs}`}><div className="literature-card-head"><BookOpen size={15} /><span>0{i + 1}</span><small>{item.tag}</small></div><h3>{item.title}</h3><footer><FileText size={13} />{item.refs}</footer></article>)}</div>;
   if (slide === 4) return <GapExplorer selectedGap={selectedGap} setSelectedGap={setSelectedGap} />;
   if (slide === 5) return <MethodologyFlow />;
   if (slide === 6) return <div className="vision-demo"><div className="vision-head"><span><Camera size={15} /> INDUSTRIAL INSPECTION · CONCEPT</span><span className="demo-tag">PROPOSED PIPELINE</span></div><div className="fabric-scan"><div className="fabric-texture" /><div className="scan-beam" /><div className="fabric-defect defect-one" /><div className="fabric-defect defect-two" /><div className="detection-box"><span>DEFECT REGION</span></div><div className="scan-camera"><Camera size={18} /><span>FIXED CAMERA</span></div><div className="scan-caption">SCANNING SURFACE · SCHEMATIC</div></div><div className="pipeline-steps">{[["01", "Capture", "Industrial camera"], ["02", "Preprocess", "OpenCV · ROI"], ["03", "Rule checks", "Threshold · morphology"], ["04", "Learned detection", "Lightweight model"], ["05", "Report", "Type · location · confidence"]].map((s, i) => <div className={`pipeline-step ${i === 2 ? "active" : ""}`} key={s[0]} role="group" aria-label={`${s[1]}: ${s[2]}`}><small>{s[0]}</small><strong>{s[1]}</strong><span>{s[2]}</span></div>)}</div><p className="viz-note">Proposed hybrid pipeline · no BIIL model performance is claimed.</p></div>;
@@ -487,10 +487,32 @@ function DataViz({ slide, selectedGap, setSelectedGap, standard, setStandard }: 
   return <div className="outcomes-board"><div className="outcome-orbit"><div className="outcome-core">BIIL<span>UNIFIED VIEW</span></div>{["Operational visibility", "Earlier problem detection", "Product quality", "Product traceability", "Energy monitoring", "Workplace safety", "Scalable digitalization"].map((o, i) => <div className="outcome-node" key={o} role="group" aria-label={o} style={{ "--outcome-angle": `${i * 51.43 - 90}deg` } as React.CSSProperties}><span>{String(i + 1).padStart(2, "0")}</span>{o}</div>)}</div><div className="closing-signoff"><span>PROPOSED OUTCOMES · NOT MEASURED RESULTS</span><strong>Thank you.</strong><p>Questions & discussion</p><div className="closing-supervisor"><SupervisorPortrait /><span>SUPERVISOR</span><b>Md. Habibullah Belali</b></div><TeamStrip /></div></div>;
 }
 
+function OpeningSlide({ selectedGap, setSelectedGap, standard, setStandard }: {
+  selectedGap: number; setSelectedGap: (i: number) => void; standard: boolean; setStandard: (v: boolean) => void;
+}) {
+  return <div className="content-grid opening-grid">
+    <div className="opening-copy">
+      <p className="hero-kicker"><span className="live-indicator" /> SOUTHEAST UNIVERSITY <span>·</span> CSE 460</p>
+      <div className="hero-title-wrap"><span className="hero-mark">B<span>.</span></span><h1 className="hero-title">BIIL</h1><div className="hero-rule" /></div>
+      <h2>Bangladesh Industrial<br />Intelligence Layer</h2>
+      <p className="hero-subtitle">{teamLead}</p>
+      <div className="hero-meta"><span>FINAL YEAR DESIGN PROJECT I</span><span>DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING</span></div>
+    </div>
+    <div className="visual-column opening-visual-column">
+      <section className="opening-team-panel" aria-label="Project supervisor and team">
+        <div className="hero-supervisor"><SupervisorPortrait /><div><span>SUPERVISED BY</span><strong>Md. Habibullah Belali</strong><small>Assistant Professor · Department of Computer Science & Engineering</small></div></div>
+        <TeamStrip />
+      </section>
+      <DataViz slide={0} selectedGap={selectedGap} setSelectedGap={setSelectedGap} standard={standard} setStandard={setStandard} />
+      <p className="visual-caption"><span>CONCEPTUAL DIGITAL TWIN</span><span>PROPOSED SYSTEM · FYDP-I</span></p>
+    </div>
+  </div>;
+}
+
 function SlideContent({ slide, selectedGap, setSelectedGap, standard, setStandard }: {
   slide: number; selectedGap: number; setSelectedGap: (i: number) => void; standard: boolean; setStandard: (v: boolean) => void;
 }) {
-  if (slide === 0) return <div className="content-grid opening-grid"><div className="opening-copy"><p className="hero-kicker"><span className="live-indicator" /> SOUTHEAST UNIVERSITY <span>·</span> CSE 460</p><div className="hero-title-wrap"><span className="hero-mark">B<span>.</span></span><h1 className="hero-title">BIIL</h1><div className="hero-rule" /></div><h2>Bangladesh Industrial<br />Intelligence Layer</h2><p className="hero-subtitle">{teamLead}</p><div className="hero-meta"><span>FINAL YEAR DESIGN PROJECT I</span><span>DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING</span></div><div className="hero-supervisor"><SupervisorPortrait /><div><span>SUPERVISED BY</span><strong>Md. Habibullah Belali</strong><small>Assistant Professor · Department of CSE</small></div></div><TeamStrip /></div><div className="visual-column"><DataViz slide={slide} selectedGap={selectedGap} setSelectedGap={setSelectedGap} standard={standard} setStandard={setStandard} /><p className="visual-caption"><span>CONCEPTUAL DIGITAL TWIN</span><span>PROPOSED SYSTEM · FYDP-I</span></p></div></div>;
+  if (slide === 0) return <OpeningSlide selectedGap={selectedGap} setSelectedGap={setSelectedGap} standard={standard} setStandard={setStandard} />;
   const copy: Record<number, [string, string, string, string[]]> = {
     1: ["02 / PROBLEM & MOTIVATION", "What if a factory could see a machine failure before it happens?", "RMG and textiles power Bangladesh's manufacturing economy, yet many factories rely on manual records and disconnected software.", ["Unexpected breakdowns · no real-time monitoring · late defect detection", "Energy waste · poor product traceability · safety risks", "Scattered factory data and a lack of affordable local smart-factory options"]],
     2: ["03 / AIM & OBJECTIVES", "What BIIL is designed to help a factory do.", "The project aims to design an affordable industrial platform for garment, textile and other factories in Bangladesh.", ["Monitor machine condition and production; detect anomalies and support failure prediction", "Inspect quality; track products; monitor energy and environment", "Improve safety with PPE monitoring; provide dashboards, reports, recommendations and ERP/MES support"]],

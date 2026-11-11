@@ -68,10 +68,12 @@
   .key-point > span { width: 30px; height: 30px; font-size: 12px; }
   .scope-label { font-size: 11px; }
   .visual-caption { font-size: 11px; }
+  .scene-1 .slide-heading .subtitle { font-size: clamp(18px,min(1vw,1.8vh),20px); line-height: 1.5; }
+  .scene-1 .key-point { font-size: clamp(17px,min(.95vw,1.7vh),19px); line-height: 1.45; }
 
   .hero-kicker { font-size: 11px; }
-  .opening-copy h2 { font-size: 32px; }
-  .hero-subtitle { font-size: 16px; line-height: 1.6; max-width: 620px; }
+  .opening-copy h2 { font-size: 35px; }
+  .hero-subtitle { font-size: 18px; line-height: 1.5; max-width: 620px; }
   .hero-meta { font-size: 13px; line-height: 1.5; gap: 8px 14px; }
   .hero-supervisor { margin-top: 19px; gap: 13px; align-items: center; }
   .supervisor-portrait { width: 60px; height: 60px; }
@@ -94,13 +96,14 @@
   .member-details small { flex: none; font: 10px var(--mono); color: #61c8be; }
   .member-details strong { color: #e1eae7; font-size: 15px; line-height: 1.35; font-weight: 600; }
 
-  .problem-board-top { font-size: 11px; }
-  .problem-index { font-size: 11px; }
-  .problem-row { min-height: 45px; height: auto; grid-template-columns: 27px minmax(210px, .95fr) minmax(120px, 1fr) 18px; gap: 9px; }
-  .problem-label { font-size: 12px; line-height: 1.4; font-weight: 600; color: #d5e0dd; }
+  .scene-1 .problem-board { padding: 23px 26px 18px; }
+  .problem-board-top { font-size: 13px; padding-bottom: 14px; }
+  .problem-index { font-size: 13px; }
+  .problem-row { min-height: 50px; height: auto; grid-template-columns: 28px minmax(220px, .95fr) minmax(120px, 1fr) 20px; gap: 10px; }
+  .problem-label { font-size: 14px; line-height: 1.35; font-weight: 600; color: #e0e9e6; }
   .problem-graph { min-width: 80px; }
-  .status { font-size: 10px; }
-  .viz-note { font-size: 12px; line-height: 1.5; }
+  .status { font-size: 12px; }
+  .viz-note { font-size: 13px; line-height: 1.45; }
   .source-node { font-size: 12px; }
   .biil-core span { font-size: 8px; }
   .domain-detail-heading strong { font-size: 17px; }
@@ -186,11 +189,11 @@
   .objective-item > span { flex: none; color: #69d2c7; font: 11px var(--mono); }
   .objective-item p { margin: 0; color: #d6e0dd; font-size: 12px; line-height: 1.45; }
   .literature-board { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: 100%; max-width: 760px; }
-  .literature-card { min-height: 178px; display: flex; flex-direction: column; padding: 13px 14px 11px; border: 1px solid rgba(137,190,190,.2); background: rgba(10,19,25,.93); }
+  .literature-card { min-height: 140px; display: flex; flex-direction: column; padding: 13px 14px 11px; border: 1px solid rgba(137,190,190,.2); background: rgba(10,19,25,.93); }
   .literature-card-head { display: flex; align-items: center; gap: 9px; color: #70d4c9; }
   .literature-card-head > span { font: 10px var(--mono); }
   .literature-card-head small { font: 9px var(--mono); letter-spacing: .09em; color: #89a3a3; }
-  .literature-card h3 { margin: 10px 0 6px; font-size: 16px; line-height: 1.3; color: #e3ebe8; }
+  .literature-card h3 { margin: 12px 0 8px; font-size: 18px; line-height: 1.25; color: #e3ebe8; }
   .literature-card p { margin: 0; color: #b2c0be; font-size: 13px; line-height: 1.5; }
   .literature-card footer { margin-top: auto; padding-top: 8px; color: #69c9bf; font: 11px var(--mono); }
   .literature-caveat { grid-column: 1/-1; margin: 0; color: #e0b36f; font: 10px var(--mono); letter-spacing: .04em; }
@@ -257,18 +260,35 @@
   .content-grid { grid-template-columns: minmax(560px,.88fr) minmax(650px,1.12fr); gap: 3vw; }
   .scene-7 { grid-template-columns: minmax(520px,.78fr) minmax(650px,1.22fr); gap: 3vw; }
   .slide-copy { max-width: 660px; padding-left: 0; }
-  .slide-heading h1 { font-size: clamp(48px,min(3.45vw,7.1vh),66px); }
-  .slide-heading .subtitle { font-size: clamp(18px,min(.98vw,1.8vh),20px); }
-  .key-point { font-size: clamp(15px,min(.9vw,1.6vh),18px); }
+  .slide-heading h1 { font-size: clamp(52px,min(3.65vw,7.2vh),70px); }
+  .slide-heading .subtitle { font-size: clamp(19px,min(1.04vw,1.9vh),21px); }
+  .key-point { font-size: clamp(16px,min(.95vw,1.7vh),19px); }
+  .opening-copy h2 { font-size: 38px; }
+  .opening-copy .hero-subtitle { font-size: 20px; }
+  .opening-copy .hero-meta { font-size: 14px; }
   .visual-column { transform: scale(1.1); transform-origin: center right; }
   .opening-grid .visual-column { transform: translateY(-1.1vh); }
   .scene-4 .visual-column { transform: scale(1.08); }
+  .opening-grid .opening-visual-column { transform: none !important; }
+  .opening-team-panel { width: min(100%,900px); padding: 20px; }
+  .opening-team-panel .hero-supervisor { margin-bottom: 18px; }
+  .opening-team-panel .supervisor-portrait { width: 64px; height: 64px; }
+  .opening-team-panel .hero-supervisor > div:last-child > span { font-size: 13px; }
+  .opening-team-panel .hero-supervisor > div:last-child > strong { font-size: 21px; }
+  .opening-team-panel .hero-supervisor > div:last-child > small { font-size: 14px; }
+  .opening-team-panel .team-roster-heading { font-size: 14px; }
+  .opening-team-panel .team-roster-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 9px; }
+  .opening-team-panel .team-member { min-height: 62px; padding: 7px 9px; gap: 9px; }
+  .opening-team-panel .member-portrait { width: 52px; height: 52px; flex-basis: 52px; min-width: 52px; max-width: 52px; }
+  .opening-team-panel .member-details strong { font-size: 15px; }
 }
 
 @media (min-width: 1101px) and (max-height: 820px) {
   .slide-stage { inset: 72px 0 72px; }
   .slide-heading h1 { font-size: clamp(36px,min(3.2vw,6.5vh),50px); }
   .slide-heading .subtitle { font-size: clamp(15px,min(.9vw,1.8vh),17px); }
+  .scene-1 .slide-heading .subtitle { font-size: 16px; }
+  .scene-1 .key-point { font-size: 15px; }
   .key-points { gap: 10px; margin-top: 20px; }
   .key-point { font-size: 14px; line-height: 1.4; }
   .visual-column { transform: scale(1) !important; }
@@ -310,6 +330,27 @@
   .deliverables-board .viz-note { margin-top: 7px; font-size: 10px; }
 }
 
+.opening-grid .opening-visual-column { height: 100%; min-height: 0; justify-content: flex-start; padding: 3% 1vw 0 0; transform: none !important; }
+.opening-team-panel { position: relative; z-index: 2; width: min(100%,840px); margin: 1.5% auto 0; padding: 16px; border: 1px solid rgba(128,199,194,.25); background: linear-gradient(145deg,rgba(9,19,25,.94),rgba(5,12,17,.88)); box-shadow: inset 0 0 26px rgba(43,112,112,.06); }
+.opening-team-panel .hero-supervisor { margin: 0 0 14px; gap: 12px; align-items: center; }
+.opening-team-panel .supervisor-portrait { width: 56px; height: 56px; }
+.opening-team-panel .hero-supervisor > div:last-child > span { font-size: 11px; }
+.opening-team-panel .hero-supervisor > div:last-child > strong { font-size: 18px; }
+.opening-team-panel .hero-supervisor > div:last-child > small { font-size: 12px; line-height: 1.4; }
+.opening-team-panel .team-roster { width: 100%; max-width: none; margin-top: 0; }
+.opening-team-panel .team-roster-heading { font-size: 12px; margin-bottom: 8px; }
+.opening-team-panel .team-roster-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 7px; }
+.opening-team-panel .team-member { min-width: 0; min-height: 56px; gap: 8px; padding: 5px 7px; }
+.opening-team-panel .member-portrait { width: 44px; height: 44px; flex-basis: 44px; min-width: 44px; max-width: 44px; }
+.opening-team-panel .member-details { min-width: 0; gap: 4px; }
+.opening-team-panel .member-details small { font-size: 9px; }
+.opening-team-panel .member-details strong { font-size: 13px; line-height: 1.25; }
+@media (min-width: 1600px) {
+  .opening-team-panel .team-roster-heading { font-size: 14px; }
+  .opening-team-panel .team-member { min-height: 62px; padding: 7px 9px; gap: 9px; }
+  .opening-team-panel .member-portrait { width: 52px; height: 52px; flex-basis: 52px; min-width: 52px; max-width: 52px; }
+  .opening-team-panel .member-details strong { font-size: 16px; }
+}
 .objective-columns { width: 100%; max-width: 750px; margin-left: auto; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
 .objective-column { min-width: 0; min-height: 170px; padding: 16px; border: 1px solid color-mix(in srgb,var(--objective-color),transparent 74%); border-left: 3px solid var(--objective-color); background: linear-gradient(145deg,rgba(15,29,35,.94),rgba(8,16,22,.96)); box-shadow: inset 0 0 24px color-mix(in srgb,var(--objective-color),transparent 96%); animation: objectiveReveal .55s ease both; animation-delay: calc(var(--objective-index) * .1s); }
 .objective-column header { display: grid; grid-template-columns: 19px 25px 1fr; align-items: center; gap: 8px; padding-bottom: 11px; border-bottom: 1px solid rgba(167,203,200,.13); }
@@ -351,6 +392,8 @@
   .slide-heading .subtitle { font-size: 15px; }
   .key-point { font-size: 13px; }
   .hero-subtitle { font-size: 13px; }
+  .scene-1 .slide-heading .subtitle { font-size: 14px; line-height: 1.5; }
+  .scene-1 .key-point { font-size: 13px; line-height: 1.4; }
   .hero-meta { margin-top: 12px; font-size: 12px; line-height: 1.35; gap: 6px 9px; }
   .hero-supervisor { margin-top: 16px; }
   .team-roster { margin-top: 12px; max-width: 650px; }
@@ -363,6 +406,29 @@
   .member-details { min-width: 0; display: flex; align-items: center; gap: 5px; }
   .member-details small { flex: none; font: 8px var(--mono); color: #61c8be; }
   .member-details strong { font-size: 11px; }
+  .opening-copy h2 { font-size: 25px; margin-top: 16px; }
+  .opening-copy .hero-subtitle { font-size: 14px; line-height: 1.45; }
+  .opening-copy .hero-meta { font-size: 12px; gap: 6px 9px; }
+  .opening-team-panel { width: 100%; margin: 0 auto; padding: 10px; }
+  .opening-team-panel .hero-supervisor { gap: 8px; margin-bottom: 9px; }
+  .opening-team-panel .supervisor-portrait { width: 38px; height: 38px; }
+  .opening-team-panel .hero-supervisor > div:last-child > span { font-size: 9px; }
+  .opening-team-panel .hero-supervisor > div:last-child > strong { font-size: 16px; }
+  .opening-team-panel .hero-supervisor > div:last-child > small { font-size: 11px; }
+  .opening-team-panel .team-roster-heading { margin-bottom: 5px; font-size: 9px; }
+  .opening-team-panel .team-roster-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 5px; }
+  .opening-team-panel .team-member { min-height: 43px; gap: 6px; padding: 3px 4px; }
+  .opening-team-panel .member-portrait { width: 30px; height: 30px; flex-basis: 30px; min-width: 30px; max-width: 30px; }
+  .opening-team-panel .member-details { gap: 3px; }
+  .opening-team-panel .member-details small { font-size: 7px; }
+  .opening-team-panel .member-details strong { font-size: 12px; }
+  .scene-1 .problem-board { padding: 12px; }
+  .scene-1 .problem-board-top { font-size: 10px; padding-bottom: 9px; }
+  .scene-1 .problem-row { grid-template-columns: 20px minmax(145px,1fr) minmax(62px,.55fr) 16px; gap: 6px; min-height: 45px; }
+  .scene-1 .problem-index { font-size: 9px; }
+  .scene-1 .problem-label { font-size: 11px; line-height: 1.25; }
+  .scene-1 .status { font-size: 8px; }
+  .scene-1 .viz-note { font-size: 9px; }
   .objective-column header strong { font-size: 12px; }
   .objective-column li { font-size: 14px; }
   .pipeline-step small { font-size: 10px; }
@@ -508,6 +574,8 @@
   .closing-signoff .member-details strong { font-size: 8px; }
   .problem-row { min-height: 42px; height: auto; grid-template-columns: 23px minmax(0, 1fr) 16px; gap: 6px; }
   .problem-label { font-size: 8px; line-height: 1.25; }
+  .scene-1 .problem-board-top { font-size: 9px; }
+  .scene-1 .problem-label { font-size: 10px; line-height: 1.35; }
   .problem-graph { display: none; }
   .objectives-board { display: grid; grid-template-columns: 1fr; gap: 6px; }
   .objective-item { min-height: 48px; display: flex; align-items: flex-start; gap: 8px; padding: 8px; border: 1px solid rgba(134,190,189,.19); background: rgba(12,22,28,.91); }
