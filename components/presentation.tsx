@@ -381,21 +381,20 @@ function ArchitectureDiagram() {
       </div>)}
       <div className="architecture-protocol"><span>MQTT / HTTPS over TLS</span><i /> timestamps · device IDs · validated records</div>
     </div>
-    <p className="architecture-flow-note">Animated procedural 3D layer stack · flow runs Industrial Edge → AI / Data → Application → Client.</p>
   </div>;
 }
 
 function MethodologyFlow() {
   const stations = [
-    { x: 14, id: "01", title: "COLLECT", lines: ["Sensors + cameras", "Barcode / RFID"], color: "#79d8c5", icon: "SENSORS" },
-    { x: 166, id: "02", title: "VALIDATE AT EDGE", lines: ["Check + preprocess", "Buffer at source"], color: "#8bc8ff", icon: "EDGE GATEWAY" },
-    { x: 318, id: "03", title: "TRANSMIT SECURELY", lines: ["MQTT / HTTPS", "TLS · device IDs"], color: "#f0be75", icon: "SECURE LINK" },
-    { x: 470, id: "04", title: "PROCESS + STORE", lines: ["AI services", "Database · media"], color: "#c5a1ff", icon: "BIIL CORE" },
-    { x: 622, id: "05", title: "DELIVER", lines: ["Dashboards + alerts", "Reports · ERP / MES"], color: "#72d8ce", icon: "FACTORY USERS" },
+    { x: 14, id: "01", title: "COLLECT", lines: ["Sensors + cameras", "Barcode / RFID"], color: "#79d8c5" },
+    { x: 166, id: "02", title: "VALIDATE AT EDGE", lines: ["Check + preprocess", "Buffer at source"], color: "#8bc8ff" },
+    { x: 318, id: "03", title: "TRANSMIT SECURELY", lines: ["MQTT / HTTPS", "TLS · device IDs"], color: "#f0be75" },
+    { x: 470, id: "04", title: "PROCESS + STORE", lines: ["AI services", "Database · media"], color: "#c5a1ff" },
+    { x: 622, id: "05", title: "DELIVER", lines: ["Dashboards + alerts", "Reports · ERP / MES"], color: "#72d8ce" },
   ];
   return <div className="method-flow-shell">
     <div className="method-flow-topline"><span><i /> LIVE DATA PATH</span><small>EDGE → CENTRAL → OPERATIONS</small></div>
-    <svg className="method-flow-svg" viewBox="0 0 760 430" role="img" aria-labelledby="method-flow-title method-flow-description">
+    <svg className="method-flow-svg" viewBox="0 0 760 370" role="img" aria-labelledby="method-flow-title method-flow-description">
       <title id="method-flow-title">BIIL end-to-end methodology data flow</title>
       <desc id="method-flow-description">Animated sensor and camera data passes through edge validation, secure transport, AI and storage, then reaches factory dashboards, alerts, reports, and ERP or MES systems.</desc>
       <defs>
@@ -404,11 +403,9 @@ function MethodologyFlow() {
         <pattern id="methodGrid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#a4d3d1" strokeOpacity=".055" strokeWidth=".6" /></pattern>
         <filter id="methodGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3.5" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
       </defs>
-      <rect x="1" y="1" width="758" height="428" rx="8" fill="#071117" fillOpacity=".82" stroke="#7bb7b2" strokeOpacity=".2" />
-      <rect x="2" y="2" width="756" height="426" rx="7" fill="url(#methodGrid)" />
-      <circle cx="380" cy="204" r="195" fill="url(#methodNodeGlow)" opacity=".35" />
-      <text x="25" y="37" className="method-svg-kicker">FACTORY SIGNALS</text>
-      <text x="735" y="37" textAnchor="end" className="method-svg-kicker">ACTIONABLE INTELLIGENCE</text>
+      <rect x="1" y="1" width="758" height="368" rx="8" fill="#071117" fillOpacity=".82" stroke="#7bb7b2" strokeOpacity=".2" />
+      <rect x="2" y="2" width="756" height="366" rx="7" fill="url(#methodGrid)" />
+      <circle cx="380" cy="204" r="160" fill="url(#methodNodeGlow)" opacity=".35" />
       <path d="M35 73H725" className="method-flow-track" />
       <path d="M35 73H725" className="method-flow-trace" />
       <path d="M35 73H725" className="method-flow-trace method-flow-trace-alt" />
@@ -420,7 +417,6 @@ function MethodologyFlow() {
           <rect x={station.x} y="112" width="136" height="184" rx="5" className="method-station-card" />
           <path d={`M${station.x + 1} 117H${station.x + 135}`} className="method-station-accent" />
           <text x={station.x + 12} y="136" className="method-station-id">{station.id}</text>
-          <text x={station.x + 124} y="136" textAnchor="end" className="method-station-status">{station.icon}</text>
           <text x={cx} y="169" textAnchor="middle" className="method-station-title">{station.title}</text>
           <g className="method-station-core" filter="url(#methodGlow)">
             <circle cx={cx} cy="207" r="18" className="method-core-orbit" />
@@ -429,16 +425,11 @@ function MethodologyFlow() {
           </g>
           <text x={cx} y="250" textAnchor="middle" className="method-station-detail">{station.lines[0]}</text>
           <text x={cx} y="267" textAnchor="middle" className="method-station-detail">{station.lines[1]}</text>
-          <path d={`M${station.x + 12} 279H${station.x + 124}`} className="method-station-divider" />
-          <text x={station.x + 12} y="291" className="method-station-foot">{i === 0 ? "SOURCE" : i === 4 ? "OUTPUT" : "PROCESS"}</text>
         </g>;
       })}
-      <path d="M690 296V330H234V296" className="method-feedback-track" />
-      <path d="M690 296V330H234V296" className="method-feedback-flow" />
-      <text x="445" y="350" textAnchor="middle" className="method-feedback-label">VALIDATED DATA + ALERTS INFORM THE NEXT DECISION</text>
-      <g className="method-output-chip" transform="translate(73 374)"><rect width="154" height="31" rx="3" /><circle cx="13" cy="15.5" r="3" /><text x="25" y="19">MACHINE + PRODUCT</text></g>
-      <g className="method-output-chip" transform="translate(303 374)"><rect width="154" height="31" rx="3" /><circle cx="13" cy="15.5" r="3" /><text x="25" y="19">QUALITY + ENERGY</text></g>
-      <g className="method-output-chip" transform="translate(533 374)"><rect width="154" height="31" rx="3" /><circle cx="13" cy="15.5" r="3" /><text x="25" y="19">SAFETY + OPERATIONS</text></g>
+      <g className="method-output-chip" transform="translate(60 320)"><rect width="200" height="31" rx="3" /><circle cx="15" cy="15.5" r="3.5" /><text x="31" y="20">MACHINE + PRODUCT</text></g>
+      <g className="method-output-chip" transform="translate(280 320)"><rect width="200" height="31" rx="3" /><circle cx="15" cy="15.5" r="3.5" /><text x="31" y="20">QUALITY + ENERGY</text></g>
+      <g className="method-output-chip" transform="translate(500 320)"><rect width="200" height="31" rx="3" /><circle cx="15" cy="15.5" r="3.5" /><text x="31" y="20">SAFETY + OPERATIONS</text></g>
     </svg>
     <div className="method-flow-legend"><span><i className="legend-signal" /> telemetry + images</span><span><i className="legend-secure" /> encrypted transport</span><span><i className="legend-action" /> operational outputs</span></div>
   </div>;
